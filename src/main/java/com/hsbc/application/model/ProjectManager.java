@@ -4,11 +4,11 @@ import java.util.Date;
 import java.util.Objects;
 
 public class ProjectManager extends User {
-    private int totalProjects;
+    private static int totalProjects;
 
-    public ProjectManager(int id, String username, String passwd, String role, Date lastLoggedIn, int totalProjects) {
+    public ProjectManager(int id, String username, String passwd, String role, Date lastLoggedIn) {
         super(id, username, passwd, role, lastLoggedIn);
-        this.totalProjects = totalProjects;
+        totalProjects += 1;
     }
 
     // Getters and Setters
@@ -18,7 +18,7 @@ public class ProjectManager extends User {
     }
 
     public void setTotalProjects(int totalProjects) {
-        this.totalProjects = totalProjects;
+        totalProjects += 1;
     }
 
     @Override

@@ -2,18 +2,17 @@ package com.hsbc.application.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+
+import java.sql.*;
 
 @Configuration //makes this class as a xml file
 public class DBConfig {
 
 
     static Connection conn = null;
-    private static final String URL = "jdbc:mysql://localhost:3306/BugTrackingSys";
-    private static final String USER = "root";
-    private static final String PASSWORD = "";
+    private static final String URL = "jdbc:mysql://bugtrackingsys.cosgvjbgcjho.ap-south-1.rds.amazonaws.com:3306/DefectHub?useSSL=false";
+    private static final String USER = "admin";
+    private static final String PASSWORD = "BugTrackingSys";
 
     @Bean
     public static Connection getConnection() {
@@ -28,14 +27,21 @@ public class DBConfig {
         return conn;
     }
 
-//    public static void main(String[] args) {
-//        Connection conn = new DBConfig().connection();
-//        if (conn != null) {
-//            System.out.println("Connection established");
-//        }
-//        else {
-//            System.out.println("Check your connection");
-//        }
-//    }
+    public static void main(String[] args) throws SQLException {
+        Connection conn = new DBConfig().getConnection();
+        if (conn != null) {
+            System.out.println("Connection established");
+            PreparedStatement st = conn.prepareStatement("select * from Users");
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                System.out.println(rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3 )+" "+rs.getString(4)+ " "+rs.getTimestamp(5));
+            }
+
+
+        }
+        else {
+            System.out.println("Check your connection");
+        }
+    }
 
 }

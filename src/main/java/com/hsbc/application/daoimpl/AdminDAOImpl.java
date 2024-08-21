@@ -7,29 +7,35 @@ import com.hsbc.application.model.*;
 
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import static com.hsbc.application.model.Developer.getDeveloperById;
 
 public class AdminDAOImpl implements AdminDAO {
 
-    //@Autowired
-    private final Connection conn = DBConfig.getConnection();
-    Tester reporter;
+
+    Connection connection;
+
+
+    public AdminDAOImpl(Connection connection) {
+        this.connection = connection;
+    }
 
     @Override
     public Bug getBugInfo(int bugID) throws BugNotFoundException, DatabaseAccessException {
-        String sql = "select * from bugs where bug_id = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)){
+        String sql = "select * from Bugs where bugId = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)){
             stmt.setInt(1, bugID);
             try(ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     Bug bug = new Bug();
                     bug.setBugID(rs.getInt("bugID"));
                     bug.setTitle(rs.getString("title"));
-                    bug.setDesc(rs.getString("desc"));
+                    bug.setDesc(rs.getString("description"));
                     bug.setStatus(rs.getString("status"));
                     bug.setPriority(rs.getString("priority"));
                     bug.setSeverity(rs.getString("severity"));
@@ -38,9 +44,9 @@ public class AdminDAOImpl implements AdminDAO {
                             "Website Redesign",
                             "2024-01-15",
                             "In Progress",
-                            new ProjectManager(101, "John Doe", "pass","Developer",new Date(), 3 ),
-                            new Date(), // createdAt
-                            new Date()  // updatedAt
+                            new ProjectManager(101, "John Doe", "pass","Developer",new java.util.Date()),
+                            new java.util.Date(),// createdAt
+                            new java.util.Date()  // updatedAt
                     ));
 
                     bug.setAssignee(new Developer(
@@ -48,7 +54,7 @@ public class AdminDAOImpl implements AdminDAO {
                             "John Doe",
                             "pass",
                             "Developer",
-                            new Date()
+                            new java.util.Date()
                     ));
                     bug.setCreatedAt(rs.getTimestamp("created_at"));
                     bug.setUpdatedAt(rs.getTimestamp("updated_at"));
@@ -65,8 +71,6 @@ public class AdminDAOImpl implements AdminDAO {
                     Tester reporter = Tester.getTesterById(rs.getInt("reporterId"));
                     bug.setReporter(reporter);
 
-
-
                     return bug;
                 } else {
                     throw new BugNotFoundException("Bug with ID " + bugID + " not found.");
@@ -80,14 +84,110 @@ public class AdminDAOImpl implements AdminDAO {
     }
 
     @Override
-    public User getUserInfo(int userID) throws UserNotFoundException, DatabaseAccessException {
-        return null;
+    public User getUserId(int userID) throws DatabaseAccessException {
+        User user = null;
+        String sql = "SELECT * FROM Users WHERE userId = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, userID);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    user = new User();
+                    user.setId(rs.getInt("userId"));
+                    user.setUsername(rs.getString("userName"));
+                    user.setPasswd(rs.getString("hashedPassword"));
+                    user.setRole(rs.getString("role"));
+                    user.setLastLoggedIn(rs.getTimestamp("last_logged_in"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseAccessException("Error accessing the database: " + e.getMessage(), e);
+        }
+        return user;
     }
 
     @Override
     public boolean createNewProject(Project project) throws DuplicateProjectException, ProjectLimitReachedException, DatabaseAccessException {
-        return false;
-    }
+            String query = "INSERT INTO Projects (projectId, projectName, startDate, status, projectManagerId, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+
+                System.out.println("In AdminDaoImpl for Create New Project");
+
+                if (isDuplicateProject(project.getProjectName())) {
+                    throw new DuplicateProjectException("Project with the same name already exists.");
+                }
+
+                if (isProjectLimitReached(project.getProjectManager().getTotalProjects())) {
+                    throw new ProjectLimitReachedException("Project limit reached for this manager.");
+                }
+
+                LocalDate startDate;
+                try {
+                    startDate = LocalDate.parse(project.getStartDate());
+                } catch (DateTimeParseException e) {
+                    throw new IllegalArgumentException("Invalid start date format.", e);
+                }
+                System.out.println(startDate);
+
+                System.out.println("Project: " + project);
+                System.out.println("ID: " +project.getProjectManager().getId());
+                // Set parameters
+                System.out.println("0");
+                ps.setInt(1, project.getProjectId());
+                System.out.println("1");
+                ps.setString(2, project.getProjectName());
+                System.out.println("2");
+                ps.setDate(3, Date.valueOf(startDate));
+                System.out.println("3");
+                ps.setString(4, project.getStatus());
+                System.out.println("4");
+                ps.setInt(5, project.getProjectManager().getId());
+                System.out.println("5");
+                ps.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
+                System.out.println("6");
+                ps.setTimestamp(7, new Timestamp(System.currentTimeMillis()));
+
+                System.out.println(new Timestamp(System.currentTimeMillis()));
+                // Execute update
+                System.out.println("Executing update");
+                int rowsAffected= ps.executeUpdate();
+                System.out.println("Rows affected: " + rowsAffected);
+                return rowsAffected > 0;
+
+            } catch (SQLException e) {
+                throw new DatabaseAccessException("Error accessing database.", e);
+            }
+        }
+
+        private boolean isDuplicateProject(String projectName) throws SQLException {
+            System.out.println("Checking for duplicate project");
+            String query = "SELECT COUNT(*) FROM Projects WHERE projectName = ?";
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setString(1, projectName);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        return rs.getInt(1) > 0;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private boolean isProjectLimitReached(int projectManagerId) throws SQLException {
+            System.out.println("Checking project limit");
+            String query = "SELECT totalProjects FROM Admins WHERE adminId = ?";
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setInt(1, projectManagerId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        int totalProjects = rs.getInt("totalProjects");
+                        return totalProjects >= 5;
+                    }
+                }
+            }
+            return false;
+        }
+
 
     @Override
     public List<Project> showProjects(int managerID) throws ProjectNotFoundException, DatabaseAccessException {

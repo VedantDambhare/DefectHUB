@@ -23,6 +23,10 @@ public class Project {
         this.updatedAt = updatedAt;
     }
 
+    public Project() {
+
+    }
+
     // Getters and Setters
 
     public String getProjectName() {
