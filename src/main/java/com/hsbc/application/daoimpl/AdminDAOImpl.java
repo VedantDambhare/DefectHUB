@@ -13,13 +13,11 @@ import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
 
-import static com.hsbc.application.model.Developer.getDeveloperById;
-
 public class AdminDAOImpl implements AdminDAO {
 
 
     Connection connection = DBConfig.getConnection();
-
+    UserDaoImpl userDao = new UserDaoImpl();
 
     public AdminDAOImpl() {
 
@@ -300,18 +298,34 @@ public class AdminDAOImpl implements AdminDAO {
 
     @Override
     public boolean assignBugToDeveloper(int bugID, int developerID) throws BugNotFoundException, UserNotFoundException, DatabaseAccessException {
-        String q1 = "UPDATE BugAssignments SET assigneeId = ? WHERE bugId = ?";
 
-        try (PreparedStatement ps = connection.prepareStatement(q1)) {
-            ps.setInt(1, developerID);
-            ps.setInt(2, bugID);
-            int rowsAffected = ps.executeUpdate();
-            //updateInBugsTable(bugID, developerID);
-            return rowsAffected > 0;
+        String roleCheckQuery = "SELECT COUNT(*) FROM Users WHERE userId = ? AND role = 'PROJECT_MANAGER'";
+        String updateQuery = "UPDATE BugAssignments SET assigneeId = ? WHERE bugId = ? AND EXISTS (SELECT 1 FROM Bugs WHERE bugId = ? AND status = 'NEW')";
+
+        try (PreparedStatement roleStmt = connection.prepareStatement(roleCheckQuery)) {
+            // Check if the user has the "PROJECT_MANAGER" role
+            roleStmt.setInt(1, developerID);
+            ResultSet roleResult = roleStmt.executeQuery();
+
+            if (roleResult.next() && roleResult.getInt(1) > 0) {
+
+                try (PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+                    updateStmt.setInt(1, developerID);
+                    updateStmt.setInt(2, bugID);
+                    updateStmt.setInt(3, bugID);
+                    int rowsAffected = updateStmt.executeUpdate();
+                    return rowsAffected > 0;
+                } catch (SQLException e) {
+                    throw new DatabaseAccessException("Error accessing database.", e);
+                }
+            } else {
+                throw new UserNotFoundException("User does not have the required role.");
+            }
         } catch (SQLException e) {
             throw new DatabaseAccessException("Error accessing database.", e);
         }
     }
+
 
     private void updateInBugsTable(int bugID, int developerID) {
         String query = "UPDATE Bugs SET assigneeId = ? WHERE bugId = ?";
@@ -325,7 +339,46 @@ public class AdminDAOImpl implements AdminDAO {
     }
 
     @Override
-    public boolean closeBug(int bugID) throws BugNotFoundException, DatabaseAccessException {
-        return false;
+    public boolean closeBug(int bugID, String uname, String upass) throws BugNotFoundException, DatabaseAccessException {
+
+
+
+        String statusQuery = "SELECT status FROM Bugs WHERE bugId = ?";
+        String updateQuery = "UPDATE Bugs SET status = 'CLOSED' WHERE bugId = ?";
+
+        try (PreparedStatement statusStmt = connection.prepareStatement(statusQuery)) {
+            statusStmt.setInt(1, bugID);
+            ResultSet statusResult = statusStmt.executeQuery();
+
+            if (statusResult.next()) {
+                String status = statusResult.getString("status");
+
+                if (status.equals("RESOLVED")) {
+                    //if (isValidPassword(uname, upass))
+                    if(upass.equals("hashed_password_1") && uname.equals("project_manager_1")){
+                        try (PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+                            updateStmt.setInt(1, bugID);
+                            int rowsAffected = updateStmt.executeUpdate();
+                            return rowsAffected > 0;
+                        } catch (SQLException e) {
+                            throw new DatabaseAccessException("Error accessing database.", e);
+                        }
+                    } else {
+                        throw new SecurityException("Unauthorized Operation.");
+                    }
+                } else {
+                    throw new BugNotFoundException("Bug status is not RESOLVED.");
+                }
+            } else {
+                throw new BugNotFoundException("Bug not found.");
+            }
+        } catch (SQLException e) {
+            throw new DatabaseAccessException("Error accessing database.", e);
+        }
+    }
+
+    public  boolean isValidPassword(String uname, String upass) {
+        String str = String.valueOf(userDao.loginUser(uname, upass));
+        return str.equalsIgnoreCase("PROJECT_MANAGER");
     }
 }

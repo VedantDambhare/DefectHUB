@@ -36,7 +36,7 @@ public class AppUI {
 
     public void start() {
         while (true) {
-            System.out.println("Welcome to the Bug Tracking System");
+            System.out.println("\n Welcome to the Bug Tracking System");
             System.out.println("1. View User Information");
             System.out.println("2. Create New Project");
             System.out.println("3. View Project");
@@ -228,12 +228,12 @@ public class AppUI {
             project.setProjectId(projectId);
             project.setProjectName(projectName);
             project.setStartDate(startDate);
-            project.setStatus(status.valueOf(status)); // Assuming ProjectStatus is an enum
+            project.setStatus(status.valueOf(status));
             project.setProjectManager(selectedPM);
 
             System.out.println("NEW PROJECT CREATION UNDER PROCESS");
             // Call service to create new project
-            boolean success = adminService.createNewProject(project); //<-- to be Implemented
+            boolean success = adminService.createNewProject(project);
             if (success) {
                 System.out.println("Project created successfully.");
             } else {
@@ -241,10 +241,10 @@ public class AppUI {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error accessing database.");
             System.out.println("Error accessing database.");
         } catch (ProjectLimitReachedException | DuplicateProjectException | DatabaseAccessException e) {
-//            throw new RuntimeException(e);
+                logger.error("Error creating new project", e);
         }
     }
 
@@ -276,8 +276,9 @@ public class AppUI {
         int managerID = scanner.nextInt();
         try {
             plist = adminService.showProjects(managerID);
+            for(Project p : plist)
+                System.out.println(p.toString());
         } catch (ProjectNotFoundException e) {
-
             logger.error("Project not found", e);
         } catch (DatabaseAccessException e) {
             throw new RuntimeException(e);
@@ -285,7 +286,6 @@ public class AppUI {
     }
 
     private void assignBugToDeveloper() {
-
 
         this.viewAllBugDetails();
         System.out.println("LIST OF ALL DEVELOPERS: (UNDER CONSTRUCTION)");
@@ -298,6 +298,10 @@ public class AppUI {
         int developerID = scanner.nextInt();
         try {
             flag = adminService.assignBugToDeveloper(bugID, developerID);
+            if(flag)
+                System.out.println("Bug with ID " +bugID+ " assigned to developer with ID " +developerID+ " successfully.");
+            else
+                System.out.println("Failed to assign bug to developer. NOTE: Only 'NEW' bugs can be assigned to developers.");
         } catch (BugNotFoundException e) {
             logger.error("Bug not found", e);
         } catch (UserNotFoundException e) {
@@ -305,15 +309,45 @@ public class AppUI {
         } catch (DatabaseAccessException e) {
             logger.error("Database access error", e);
         }
-
-        if(flag)
-            System.out.println("Bug with ID " +bugID+ " assigned to developer with ID " +developerID+ " successfully.");
-        else
-            System.out.println("Failed to assign bug to developer.");
     }
 
     private void closeBug() {
-        // Logic for closing a bug
+
+        boolean flag = false;
+        System.out.println("INITIATING BUG CLOSURE...");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("VERIFY YOURSELF...");
+        System.out.println("Enter your username: ");
+        String uname = scanner.next();
+        System.out.println("Enter your password: ");
+        String upass = scanner.next();
+        System.out.println("Enter Bug ID to perform operation: ");
+        int bugID = scanner.nextInt();
+        System.out.println("VERIFYING...");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            flag = adminService.closeBug(bugID, uname, upass);
+            if (flag)
+                System.out.println("Bug with ID " +bugID+ " closed successfully.");
+            else
+                System.out.println("Failed to close bug. NOTE: Only 'RESOLVED' bugs can be closed.");
+        } catch (BugNotFoundException e) {
+            logger.error("Bug not found", e);
+        } catch (DatabaseAccessException e) {
+            logger.error("Database access error", e);
+        }
+
+
+
     }
 }
 

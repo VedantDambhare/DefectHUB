@@ -8,6 +8,7 @@ import com.hsbc.application.model.User;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Scanner;
 
 public class AdminServiceImpl implements AdminService {
     private final AdminDAO adminDAO;
@@ -58,6 +59,10 @@ public class AdminServiceImpl implements AdminService {
         return adminDAO.assignBugToDeveloper(bugID, developerID);
     }
 
+    @Override
+    public boolean closeBug(int bugID, String uname, String upass) throws BugNotFoundException, DatabaseAccessException {
+        return adminDAO.closeBug(bugID, uname, upass);
+    }
 
 }
 

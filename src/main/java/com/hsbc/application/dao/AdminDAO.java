@@ -14,6 +14,7 @@ public interface AdminDAO {
     List<Bug> showAllBugs() throws DatabaseAccessException;
     List<Bug> showBugsByFilter(int projectID, String filter, String value) throws BugNotFoundException, DatabaseAccessException, UserNotFoundException, SQLException;
 
+
     boolean assignBugToDeveloper(int bugID, int developerID) throws BugNotFoundException, UserNotFoundException, DatabaseAccessException;
-    boolean closeBug(int bugID) throws BugNotFoundException, DatabaseAccessException;
+    boolean closeBug(int bugID, String uname, String upass) throws BugNotFoundException, DatabaseAccessException;
 }

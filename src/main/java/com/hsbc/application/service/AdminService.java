@@ -16,4 +16,5 @@ public interface AdminService {
     List<Bug> showAllBugs() throws DatabaseAccessException;
     List<Bug> showBugsByFilter(int projectID, String filter, String value) throws DatabaseAccessException, BugNotFoundException, UserNotFoundException, SQLException;
     boolean assignBugToDeveloper(int bugID, int developerID) throws BugNotFoundException, UserNotFoundException, DatabaseAccessException;
+    boolean closeBug(int bugID, String uname, String upass) throws BugNotFoundException, DatabaseAccessException;
 }

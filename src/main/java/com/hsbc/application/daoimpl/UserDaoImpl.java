@@ -37,9 +37,9 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<String> loginUser(String userName, String password) {
+    public  Optional<String> loginUser(String userName, String password) {
         try (Connection conn = DBConfig.getConnection()) {
-            String sql = "SELECT hashedPassword, role FROM users WHERE userName = ?";
+            String sql = "SELECT hashedPassword, role FROM Users WHERE userName = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, userName);
             ResultSet rs = stmt.executeQuery();
