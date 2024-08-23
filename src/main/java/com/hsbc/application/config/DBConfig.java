@@ -16,6 +16,7 @@ public class DBConfig {
 
     @Bean
     public static Connection getConnection() {
+        System.out.println("Obtaining connection to database...");
         try {
             DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
             //Class.forName("con.mysql.cj.jdbc.Driver()");
