@@ -6,6 +6,8 @@ import com.hsbc.application.model.Bug;
 import com.hsbc.application.model.Project;
 import com.hsbc.application.model.User;
 
+import java.util.List;
+
 public class AdminServiceImpl implements AdminService {
     private final AdminDAO adminDAO;
 
@@ -19,8 +21,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public User getUserId(int userID) throws UserNotFoundException, DatabaseAccessException {
-            User user = adminDAO.getUserId(userID);
+    public User getUserInfo(int userID) throws UserNotFoundException, DatabaseAccessException {
+            User user = adminDAO.getUserInfo(userID);
             if (user == null) {
                 throw new UserNotFoundException("User with ID " + userID + " not found.");
             }
@@ -32,5 +34,24 @@ public class AdminServiceImpl implements AdminService {
         System.out.println("In AdminServiceImpl for Create New Project");
         return adminDAO.createNewProject(project);
     }
+
+    @Override
+    public List<Project> showProjects(int managerID) throws ProjectNotFoundException, DatabaseAccessException {
+        System.out.println("In AdminServiceImpl for Show Projects");
+        //System.out.println(adminDAO.showProjects(managerID));
+        return adminDAO.showProjects(managerID);
+    }
+
+    @Override
+    public List<Bug> showAllBugs() throws DatabaseAccessException {
+        return adminDAO.showAllBugs();
+    }
+
+    @Override
+    public List<Bug> showBugsByFilter(int projectID, String filter, String value) throws DatabaseAccessException,BugNotFoundException{
+        return adminDAO.showBugsByFilter(projectID, filter,value);
+    }
+
+
 }
 

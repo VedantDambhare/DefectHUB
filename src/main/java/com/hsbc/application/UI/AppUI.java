@@ -3,10 +3,7 @@ package com.hsbc.application.UI;
 
 import com.hsbc.application.dao.AdminDAO;
 import com.hsbc.application.daoimpl.AdminDAOImpl;
-import com.hsbc.application.exceptions.BugTrackingException;
-import com.hsbc.application.exceptions.DatabaseAccessException;
-import com.hsbc.application.exceptions.DuplicateProjectException;
-import com.hsbc.application.exceptions.ProjectLimitReachedException;
+import com.hsbc.application.exceptions.*;
 import com.hsbc.application.model.Bug;
 import com.hsbc.application.model.Project;
 import com.hsbc.application.model.ProjectManager;
@@ -14,6 +11,7 @@ import com.hsbc.application.model.User;
 import com.hsbc.application.service.AdminService;
 import com.hsbc.application.service.ProjectService;
 import com.hsbc.application.service.ProjectServiceImpl;
+import org.slf4j.Logger;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -23,6 +21,7 @@ public class AppUI {
     private AdminService adminService;
     private ProjectService projectService;
     private Scanner scanner;
+    Logger logger;
 
     public AppUI(AdminService adminService, ProjectService projectService) {
         this.adminService = adminService;
@@ -39,12 +38,14 @@ public class AppUI {
             System.out.println("Welcome to the Bug Tracking System");
             System.out.println("1. View User Information");
             System.out.println("2. Create New Project");
-            System.out.println("3. View Projects");
-            System.out.println("4. View Project Details");
-            System.out.println("5. View Bug Details");
-            System.out.println("6. Assign Bug to Developer");
-            System.out.println("7. Close Bug");
-            System.out.println("8. Exit");
+            System.out.println("3. View Project");
+            System.out.println("4. View All Project Details");
+            System.out.println("5. View All Bug Details");
+            System.out.println("6. View Bug Details By ID");
+            System.out.println("7. View Bug Details By Filter");
+            System.out.println("8. Assign Bug to Developer");
+            System.out.println("9. Close Bug");
+            System.out.println("10. Exit");
 
             int choice = scanner.nextInt();
 
@@ -62,20 +63,81 @@ public class AppUI {
                     viewProjectDetails();
                     break;
                 case 5:
-                    viewBugDetails();
+                    viewAllBugDetails();
                     break;
                 case 6:
-                    assignBugToDeveloper();
+                    viewBugDetails();
                     break;
                 case 7:
-                    closeBug();
+                    viewBugDetailsByFilter();
                     break;
                 case 8:
+                    assignBugToDeveloper();
+                    break;
+                case 9:
+                    closeBug();
+                    break;
+                case 10:
                     System.out.println("Exiting...");
                     return;
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
+        }
+    }
+
+    private void viewBugDetailsByFilter() {
+        List<Bug> bugs;
+        String value,filter;
+        System.out.println("Enter Project ID: ");
+        int projectID = scanner.nextInt();
+        System.out.println("Enter Filter (status, priority, severity): ");
+        filter = scanner.next();
+        if(filter.equalsIgnoreCase("status")){
+            System.out.println("STATUS VALUES: NEW, IN_PROGRESS, RESOLVED, CLOSED");
+            System.out.println("ENTER STATUS VALUE");
+            value = scanner.next();
+        }else if(filter.equalsIgnoreCase("priority")){
+            System.out.println("PRIORITY VALUES: LOW, MEDIUM, HIGH, CRITICAL");
+            System.out.println("ENTER PRIORITY VALUE");
+            value = scanner.next();
+            }
+        else if(filter.equalsIgnoreCase("severity")) {
+            System.out.println("SEVERITY VALUES: MINOR, MAJOR, BLOCKER");
+            System.out.println("ENTER SEVERITY VALUE");
+            value = scanner.next();
+        }
+        try {
+            bugs = adminService.showBugsByFilter(projectID, filter, value);
+            System.out.println("Bugs filtered by " + filter + "for value" +value+ " for Project ID: " + projectID);
+            System.out.println("-------------------------------------------------");
+            System.out.println("Bug ID\tTitle\tDescription\tStatus\tPriority\tSeverity\tProject ID\tReporter ID\tAssignee ID\tCreated Date\tUpdated Date");
+            for(Bug b : bugs){
+                System.out.println(b.getBugID() + "\t" + b.getTitle() + "\t" + b.getDesc() + "\t" + b.getStatus() + "\t" + b.getPriority() + "\t" + b.getSeverity() + "\t" + b.getProject().getProjectId() + "\t" + b.getReporter().getId() + "\t" + b.getAssignee().getId() + "\t" + b.getCreatedAt() + "\t" + b.getUpdatedAt());
+            }
+        } catch (BugNotFoundException e) {
+            System.out.println("Bug not found");
+            logger.error("Bug not found", e.getMessage());
+        } catch (DatabaseAccessException e) {
+            System.out.println("Database access error");
+            logger.error("Database access error", e.getMessage());
+        }
+
+    }
+
+    private void viewAllBugDetails() {
+        List<Bug> bugs;
+        try {
+            bugs = adminService.showAllBugs();
+            System.out.println("All Bugs: ");
+            System.out.println("-------------------------------------------------");
+            System.out.println("Bug ID\tTitle\tDescription\tStatus\tPriority\tSeverity\tProject ID\tReporter ID\tAssignee ID\tCreated Date\tUpdated Date");
+            for(Bug b : bugs){
+                System.out.println(b.getBugID() + "\t" + b.getTitle() + "\t" + b.getDesc() + "\t" + b.getStatus() + "\t" + b.getPriority() + "\t" + b.getSeverity() + "\t" + b.getProject().getProjectId() + "\t" + b.getReporter().getId() + "\t" + b.getAssignee().getId() + "\t" + b.getCreatedAt() + "\t" + b.getUpdatedAt());
+            }
+        } catch (DatabaseAccessException e) {
+            System.out.println("Database access error");
+            logger.error("Database access error", e.getMessage());
         }
     }
 
@@ -89,7 +151,8 @@ public class AppUI {
             System.out.println("BUG INFO: ");
             System.out.println(bug.toString());
         } catch (BugTrackingException e) {
-            System.out.println("Error: " + e.getMessage());
+            //System.out.println("Error: " + e.getMessage());
+            logger.error("Error: Bug with ID does " +bugID+ " not exist!!!" + e.getMessage());
         }
     }
 
@@ -99,10 +162,11 @@ public class AppUI {
         int userID = scanner.nextInt();
 
         try {
-            User user = adminService.getUserId(userID);
+            User user = adminService.getUserInfo(userID);
             System.out.println("User Info: " + user);
         } catch (BugTrackingException e) {
-            System.out.println("Error: " + e.getMessage());
+            //System.out.println("Error: " + e.getMessage());
+            logger.error("Error: User with ID " +userID+ " does not exist!!!" + e.getMessage());
         }
     }
 
@@ -181,10 +245,38 @@ public class AppUI {
 
     private void viewProjects() {
         // Logic for viewing projects
+        List<Project> plist;
+        System.out.println("Enter Project Manager ID to view projects: ");
+        int managerID = scanner.nextInt();
+        try {
+            plist = adminService.showProjects(managerID);
+            System.out.println("Projects associated with Manager ID: " + managerID);
+            System.out.println("-------------------------------------------------");
+            System.out.println("Project ID\tProject Name\tStart Date\tStatus \tManager ID \tCreated Date \tUpdated Date");
+            for(Project p : plist){
+                System.out.println(p.getProjectId() + "\t" + p.getProjectName() + "\t" + p.getStartDate() + "\t" + p.getStatus() + "\t" + p.getProjectManager().getId() + "\t" + p.getCreatedAt() + "\t" + p.getUpdatedAt());
+            }
+        } catch (ProjectNotFoundException e) {
+            System.out.println("Project not found");
+            logger.error("Project not found ", e.getMessage());
+        } catch (DatabaseAccessException e) {
+            System.out.println("Database access error");
+            logger.error("Database access error", e.getMessage());
+        }
     }
 
     private void viewProjectDetails() {
-        // Logic for viewing project details
+        List<Project> plist;
+        System.out.println("Enter Manager ID to view associated projects: ");
+        int managerID = scanner.nextInt();
+        try {
+            plist = adminService.showProjects(managerID);
+        } catch (ProjectNotFoundException e) {
+
+            logger.error("Project not found", e);
+        } catch (DatabaseAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void assignBugToDeveloper() {

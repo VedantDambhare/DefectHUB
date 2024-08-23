@@ -18,11 +18,11 @@ import static com.hsbc.application.model.Developer.getDeveloperById;
 public class AdminDAOImpl implements AdminDAO {
 
 
-    Connection connection;
+    Connection connection = DBConfig.getConnection();
 
 
-    public AdminDAOImpl(Connection connection) {
-        this.connection = connection;
+    public AdminDAOImpl() {
+
     }
 
     @Override
@@ -84,7 +84,7 @@ public class AdminDAOImpl implements AdminDAO {
     }
 
     @Override
-    public User getUserId(int userID) throws DatabaseAccessException {
+    public User getUserInfo(int userID) throws DatabaseAccessException {
         User user = null;
         String sql = "SELECT * FROM Users WHERE userId = ?";
 
@@ -190,12 +190,80 @@ public class AdminDAOImpl implements AdminDAO {
 
 
     @Override
-    public List<Project> showProjects(int managerID) throws ProjectNotFoundException, DatabaseAccessException {
-        return List.of();
+    public List<Project> showProjects(int managerID) throws DatabaseAccessException {
+        System.out.println("In AdminDaoImpl for Show Projects");
+        List<Project> plist = new ArrayList<>();
+        String sql = "SELECT * FROM Projects WHERE projectManagerId = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, managerID);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Project project = new Project();
+                    //System.out.println("Project ID: " + rs.getInt("projectId"));
+                    project.setProjectId(rs.getInt("projectId"));
+
+                    //System.out.println("Project Name: " + rs.getString("projectName"));
+                    project.setProjectName(rs.getString("projectName"));
+
+                    //System.out.println("Start Date: " + rs.getDate("startDate").toString());
+                    project.setStartDate(rs.getDate("startDate").toString());
+
+                    //System.out.println("Status: " + rs.getString("status"));
+                    project.setStatus(rs.getString("status"));
+
+                    //System.out.println("Project Manager ID: " + rs.getInt("projectManagerId"));
+                    project.setProjectManager(new ProjectManager(
+                            rs.getInt("projectManagerId"),
+                            "John Doe",
+                            "pass",
+                            "Project Manager",
+                            new java.util.Date()
+                    ));
+                    //System.out.println("Created At: " + rs.getTimestamp("created_at"));
+                    project.setCreatedAt(rs.getTimestamp("created_at"));
+
+                    //System.out.println("Updated At: " +rs.getTimestamp("updated_at"));
+                    project.setUpdatedAt(rs.getTimestamp("updated_at"));
+                    plist.add(project);
+
+                    //System.out.println("Project: " + project);
+                    //System.out.println("Project List: " + plist);
+                    return plist;
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseAccessException("Error accessing the database: " + e.getMessage(), e);
+        }
+        return plist;
     }
 
     @Override
-    public List<Bug> showBugsByFilter(int projectID, String filter) throws BugNotFoundException, DatabaseAccessException {
+    public List<Bug> showAllBugs() throws DatabaseAccessException {
+        List<Bug> bugList;
+        String sql = "SELECT BugId FROM Bugs";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            try (ResultSet rs = stmt.executeQuery()) {
+                bugList = new ArrayList<>();
+                while (rs.next()) {
+                    Bug bug = getBugInfo(rs.getInt("BugId"));
+                    bugList.add(bug);
+                    System.out.println(bugList);
+                }
+                return bugList;
+            }
+        } catch (SQLException | BugNotFoundException e) {
+            throw new DatabaseAccessException("Error accessing the database: " + e.getMessage(), e);
+        }
+    }
+
+
+    @Override
+    public List<Bug> showBugsByFilter(int projectID, String filter, String value3) throws BugNotFoundException, DatabaseAccessException {
+        List<Bug> blist;
+        String ogfilter;
+        if(filter.equals("status"))
+            ogfilter = "status";
+
         return List.of();
     }
 

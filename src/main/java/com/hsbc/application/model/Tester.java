@@ -1,5 +1,6 @@
 package com.hsbc.application.model;
 
+import com.hsbc.application.config.DBConfig;
 import com.hsbc.application.exceptions.DatabaseAccessException;
 import com.hsbc.application.exceptions.UserNotFoundException;
 
@@ -11,7 +12,7 @@ import java.util.Date;
 
 public class Tester extends User {
 
-    static Connection conn;
+    static Connection conn = DBConfig.getConnection();
     public Tester(int id, String username, String passwd, String role, Date lastLoggedIn) {
         super(id, username, passwd, role, lastLoggedIn);
     }

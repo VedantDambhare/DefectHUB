@@ -1,5 +1,6 @@
 package com.hsbc.application.daoimpl;
 
+import com.hsbc.application.config.DBConfig;
 import com.hsbc.application.dao.ProjectDao;
 import com.hsbc.application.model.ProjectManager;
 
@@ -9,9 +10,9 @@ import java.util.List;
 
 public class ProjectDAOImpl implements ProjectDao {
 
-    Connection connection;
-    public ProjectDAOImpl(Connection connection) {
-        this.connection = connection;
+    Connection connection = DBConfig.getConnection();
+    public ProjectDAOImpl() {
+
     }
 
     @Override
