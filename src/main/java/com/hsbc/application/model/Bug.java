@@ -10,31 +10,28 @@ public class Bug {
     private String status;
     private String priority;
     private String severity;
-    private Project project;
-    private Tester reporter;
-    private Developer assignee;
+    private int projectId;
+    private int reporterId;
+    private int assigneeId;
     private Date createdAt;
     private Date updatedAt;
 
-    public Bug(int bugID, String title, String desc, String status, String priority, String severity, Project project, Tester reporter, Developer assignee, Date createdAt, Date updatedAt) {
+    public Bug() {
+    }
+
+    public Bug(int bugID, String title, String desc, String status, String priority, String severity, int projectId, int reporterId, int assigneeId, Date createdAt, Date updatedAt) {
         this.bugID = bugID;
         this.title = title;
         this.desc = desc;
         this.status = status;
         this.priority = priority;
         this.severity = severity;
-        this.project = project;
-        this.reporter = reporter;
-        this.assignee = assignee;
+        this.projectId = projectId;
+        this.reporterId = reporterId;
+        this.assigneeId = assigneeId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
-
-    public Bug() {
-
-    }
-
-    // Getters and Setters
 
     public int getBugID() {
         return bugID;
@@ -84,28 +81,28 @@ public class Bug {
         this.severity = severity;
     }
 
-    public Project getProject() {
-        return project;
+    public int getProjectId() {
+        return projectId;
     }
 
-    public void setProject(Project project) {
-        this.project = project;
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
     }
 
-    public Tester getReporter() {
-        return reporter;
+    public int getReporterId() {
+        return reporterId;
     }
 
-    public void setReporter(Tester reporter) {
-        this.reporter = reporter;
+    public void setReporterId(int reporterId) {
+        this.reporterId = reporterId;
     }
 
-    public Developer getAssignee() {
-        return assignee;
+    public int getAssigneeId() {
+        return assigneeId;
     }
 
-    public void setAssignee(Developer assignee) {
-        this.assignee = assignee;
+    public void setAssigneeId(int assigneeId) {
+        this.assigneeId = assigneeId;
     }
 
     public Date getCreatedAt() {
@@ -125,18 +122,6 @@ public class Bug {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Bug bug)) return false;
-        return bugID == bug.bugID && Objects.equals(title, bug.title) && Objects.equals(desc, bug.desc) && Objects.equals(status, bug.status) && Objects.equals(priority, bug.priority) && Objects.equals(severity, bug.severity) && Objects.equals(project, bug.project) && Objects.equals(reporter, bug.reporter) && Objects.equals(assignee, bug.assignee) && Objects.equals(createdAt, bug.createdAt) && Objects.equals(updatedAt, bug.updatedAt);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(bugID, title, desc, status, priority, severity, project, reporter, assignee, createdAt, updatedAt);
-    }
-
-    @Override
     public String toString() {
         return "Bug{" +
                 "bugID=" + bugID +
@@ -145,11 +130,23 @@ public class Bug {
                 ", status='" + status + '\'' +
                 ", priority='" + priority + '\'' +
                 ", severity='" + severity + '\'' +
-                ", project=" + project +
-                ", reporter=" + reporter +
-                ", assignee=" + assignee +
+                ", projectId=" + projectId +
+                ", reporterId=" + reporterId +
+                ", assigneeId=" + assigneeId +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Bug bug)) return false;
+        return bugID == bug.bugID && projectId == bug.projectId && reporterId == bug.reporterId && assigneeId == bug.assigneeId && Objects.equals(title, bug.title) && Objects.equals(desc, bug.desc) && Objects.equals(status, bug.status) && Objects.equals(priority, bug.priority) && Objects.equals(severity, bug.severity) && Objects.equals(createdAt, bug.createdAt) && Objects.equals(updatedAt, bug.updatedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bugID, title, desc, status, priority, severity, projectId, reporterId, assigneeId, createdAt, updatedAt);
     }
 }
