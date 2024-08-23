@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.Objects;
 
 public class Bug {
-    private int bugID;
     private String title;
     private String desc;
     private String status;
@@ -19,8 +18,7 @@ public class Bug {
     public Bug() {
     }
 
-    public Bug(int bugID, String title, String desc, String status, String priority, String severity, int projectId, int reporterId, int assigneeId, Date createdAt, Date updatedAt) {
-        this.bugID = bugID;
+    public Bug(String title, String desc, String status, String priority, String severity, int projectId, int reporterId, int assigneeId, Date createdAt, Date updatedAt) {
         this.title = title;
         this.desc = desc;
         this.status = status;
@@ -31,14 +29,6 @@ public class Bug {
         this.assigneeId = assigneeId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-    }
-
-    public int getBugID() {
-        return bugID;
-    }
-
-    public void setBugID(int bugID) {
-        this.bugID = bugID;
     }
 
     public String getTitle() {
@@ -124,7 +114,6 @@ public class Bug {
     @Override
     public String toString() {
         return "Bug{" +
-                "bugID=" + bugID +
                 ", title='" + title + '\'' +
                 ", desc='" + desc + '\'' +
                 ", status='" + status + '\'' +
@@ -142,11 +131,11 @@ public class Bug {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Bug bug)) return false;
-        return bugID == bug.bugID && projectId == bug.projectId && reporterId == bug.reporterId && assigneeId == bug.assigneeId && Objects.equals(title, bug.title) && Objects.equals(desc, bug.desc) && Objects.equals(status, bug.status) && Objects.equals(priority, bug.priority) && Objects.equals(severity, bug.severity) && Objects.equals(createdAt, bug.createdAt) && Objects.equals(updatedAt, bug.updatedAt);
+        return projectId == bug.projectId && reporterId == bug.reporterId && assigneeId == bug.assigneeId && Objects.equals(title, bug.title) && Objects.equals(desc, bug.desc) && Objects.equals(status, bug.status) && Objects.equals(priority, bug.priority) && Objects.equals(severity, bug.severity) && Objects.equals(createdAt, bug.createdAt) && Objects.equals(updatedAt, bug.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(bugID, title, desc, status, priority, severity, projectId, reporterId, assigneeId, createdAt, updatedAt);
+        return Objects.hash(title, desc, status, priority, severity, projectId, reporterId, assigneeId, createdAt, updatedAt);
     }
 }
