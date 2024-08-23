@@ -6,6 +6,7 @@ import com.hsbc.application.model.Bug;
 import com.hsbc.application.model.Project;
 import com.hsbc.application.model.User;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class AdminServiceImpl implements AdminService {
@@ -48,8 +49,13 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<Bug> showBugsByFilter(int projectID, String filter, String value) throws DatabaseAccessException,BugNotFoundException{
+    public List<Bug> showBugsByFilter(int projectID, String filter, String value) throws DatabaseAccessException, BugNotFoundException, UserNotFoundException, SQLException {
         return adminDAO.showBugsByFilter(projectID, filter,value);
+    }
+
+    @Override
+    public boolean assignBugToDeveloper(int bugID, int developerID) throws BugNotFoundException, UserNotFoundException, DatabaseAccessException {
+        return adminDAO.assignBugToDeveloper(bugID, developerID);
     }
 
 

@@ -1,5 +1,6 @@
 package com.hsbc.application.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.hsbc.application.exceptions.*;
@@ -11,8 +12,8 @@ public interface AdminDAO {
     boolean createNewProject(Project project) throws DuplicateProjectException, ProjectLimitReachedException, DatabaseAccessException;
     List<Project> showProjects(int managerID) throws ProjectNotFoundException, DatabaseAccessException;
     List<Bug> showAllBugs() throws DatabaseAccessException;
+    List<Bug> showBugsByFilter(int projectID, String filter, String value) throws BugNotFoundException, DatabaseAccessException, UserNotFoundException, SQLException;
 
-    List<Bug> showBugsByFilter(int projectID, String filter, String value) throws BugNotFoundException, DatabaseAccessException;
     boolean assignBugToDeveloper(int bugID, int developerID) throws BugNotFoundException, UserNotFoundException, DatabaseAccessException;
     boolean closeBug(int bugID) throws BugNotFoundException, DatabaseAccessException;
 }

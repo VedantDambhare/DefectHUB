@@ -39,44 +39,18 @@ public class AdminDAOImpl implements AdminDAO {
                     bug.setStatus(rs.getString("status"));
                     bug.setPriority(rs.getString("priority"));
                     bug.setSeverity(rs.getString("severity"));
-                    bug.setProject(new Project(
-                            101,
-                            "Website Redesign",
-                            "2024-01-15",
-                            "In Progress",
-                            new ProjectManager(101, "John Doe", "pass","Developer",new java.util.Date()),
-                            new java.util.Date(),// createdAt
-                            new java.util.Date()  // updatedAt
-                    ));
 
-                    bug.setAssignee(new Developer(
-                            101,
-                            "John Doe",
-                            "pass",
-                            "Developer",
-                            new java.util.Date()
-                    ));
+                    //Later on, we will be getting the project, developer and tester info from the respective DAOs and call their GetAllInfo() methods
+                    bug.setProjectId(rs.getInt("projectId"));
+                    bug.setReporterId(rs.getInt("reporterId"));
+                    bug.setAssigneeId(rs.getInt("assigneeId"));
                     bug.setCreatedAt(rs.getTimestamp("created_at"));
                     bug.setUpdatedAt(rs.getTimestamp("updated_at"));
-
-
-
-                    //FOR PROJECT, DEVELOPER AND TESTER INFO GTO BE PRESENT IN BUG, SIMPLY CALL THE RESPECTIVE DAO METHODS IN THE IMPLEMENTATION
-                    //OF GIVEN DAOs E.G. SHOWALLPROJECTS() FROM PROJECTSDAOIMPL, GETTESTERDETAILS() FROM TESTERDAOIMPL, GETDEVELOPERDETAILS() FROM DEVELOPERDAOIMPL
-                    //I WILL BE GETTING ONLY IDs HERE SO I WILL BE CALLING THE RESPECTIVE DAO METHODS TO GET THE DETAILS BY PASSING THIS ID.
-
-                    //TEMPORARY SOLUTION FOR TESTING PURPOSES
-                    Developer assignee = getDeveloperById(rs.getInt("assigneeId"));
-                    bug.setAssignee(assignee);
-                    Tester reporter = Tester.getTesterById(rs.getInt("reporterId"));
-                    bug.setReporter(reporter);
 
                     return bug;
                 } else {
                     throw new BugNotFoundException("Bug with ID " + bugID + " not found.");
                 }
-            } catch (UserNotFoundException e) {
-                throw new RuntimeException(e);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -247,7 +221,6 @@ public class AdminDAOImpl implements AdminDAO {
                 while (rs.next()) {
                     Bug bug = getBugInfo(rs.getInt("BugId"));
                     bugList.add(bug);
-                    System.out.println(bugList);
                 }
                 return bugList;
             }
@@ -258,18 +231,97 @@ public class AdminDAOImpl implements AdminDAO {
 
 
     @Override
-    public List<Bug> showBugsByFilter(int projectID, String filter, String value3) throws BugNotFoundException, DatabaseAccessException {
+    public List<Bug> showBugsByFilter(int projectID, String filter, String value) throws BugNotFoundException, DatabaseAccessException, UserNotFoundException, SQLException {
         List<Bug> blist;
         String ogfilter;
-        if(filter.equals("status"))
-            ogfilter = "status";
+        //        if(filter.equalsIgnoreCase("status")) {
+        //            if (value.equalsIgnoreCase("NEW")) {
+        //                ogfilter = "NEW";
+        //            } else if (value.equalsIgnoreCase("IN_PROGRESS")) {
+        //                ogfilter = "IN_PROGRESS";
+        //            } else if (value.equalsIgnoreCase("RESOLVED")) {
+        //                ogfilter = "RESOLVED";
+        //            } else {
+        //                ogfilter = "CLOSED";
+        //            }
+        //        } else if (filter.equalsIgnoreCase("priority")) {
+        //            if (value.equalsIgnoreCase("LOW")){
+        //                ogfilter="LOW";
+        //            } else if (value.equalsIgnoreCase("MEDIUM")) {
+        //                ogfilter = "MEDIUM";
+        //            } else if (value.equalsIgnoreCase("HIGH")) {
+        //                ogfilter="HIGH";
+        //            }else {
+        //                ogfilter="CRITICAL";
+        //            }
+        //        }else {
+        //            if (value.equalsIgnoreCase("MINOR")){
+        //                ogfilter="MINOR";
+        //            } else if (value.equalsIgnoreCase("MAJOR")) {
+        //                ogfilter="MAJOR";
+        //            }else{
+        //                ogfilter="BLOCKER";
+        //            }
+        //        }
 
-        return List.of();
+
+        String query = "SELECT * FROM Bugs WHERE projectId = ? AND " + filter + " = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, projectID);
+            preparedStatement.setString(2, value);
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                blist = new ArrayList<>();
+                while (rs.next()) {
+                    Bug bug = new Bug();
+                    bug.setBugID(rs.getInt("bugId"));
+                    bug.setTitle(rs.getString("title"));
+                    bug.setDesc(rs.getString("description"));
+                    bug.setStatus(rs.getString("status"));
+                    bug.setPriority(rs.getString("priority"));
+                    bug.setSeverity(rs.getString("severity"));
+                    bug.setProjectId(rs.getInt("projectId"));
+                    bug.setReporterId(rs.getInt("reporterId"));
+                    bug.setAssigneeId(rs.getInt("assigneeId"));
+//                    int ProjectId = rs.getInt("projectId");
+                    bug.setCreatedAt(rs.getTimestamp("created_at"));
+                    bug.setUpdatedAt(rs.getTimestamp("updated_at"));
+
+                    blist.add(bug);
+                    //System.out.println("Bug: " + bug);
+                    return blist;
+                }
+
+            }
+        }catch (SQLException e) {
+            System.out.println("Error while working with DB: " + e.getMessage());
+        }
+        return null;
     }
 
     @Override
     public boolean assignBugToDeveloper(int bugID, int developerID) throws BugNotFoundException, UserNotFoundException, DatabaseAccessException {
-        return false;
+        String q1 = "UPDATE BugAssignments SET assigneeId = ? WHERE bugId = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(q1)) {
+            ps.setInt(1, developerID);
+            ps.setInt(2, bugID);
+            int rowsAffected = ps.executeUpdate();
+            //updateInBugsTable(bugID, developerID);
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            throw new DatabaseAccessException("Error accessing database.", e);
+        }
+    }
+
+    private void updateInBugsTable(int bugID, int developerID) {
+        String query = "UPDATE Bugs SET assigneeId = ? WHERE bugId = ?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, bugID);
+            ps.setInt(2, developerID);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

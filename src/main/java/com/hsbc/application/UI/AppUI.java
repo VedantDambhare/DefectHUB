@@ -27,6 +27,7 @@ public class AppUI {
         this.adminService = adminService;
         this.projectService = projectService;
         this.scanner = new Scanner(System.in);
+        this.logger = org.slf4j.LoggerFactory.getLogger(AppUI.class);
     }
 
     public AppUI() {
@@ -88,7 +89,7 @@ public class AppUI {
 
     private void viewBugDetailsByFilter() {
         List<Bug> bugs;
-        String value,filter;
+        String value = "",filter;
         System.out.println("Enter Project ID: ");
         int projectID = scanner.nextInt();
         System.out.println("Enter Filter (status, priority, severity): ");
@@ -107,20 +108,24 @@ public class AppUI {
             System.out.println("ENTER SEVERITY VALUE");
             value = scanner.next();
         }
+
         try {
             bugs = adminService.showBugsByFilter(projectID, filter, value);
-            System.out.println("Bugs filtered by " + filter + "for value" +value+ " for Project ID: " + projectID);
+            if(bugs == null)
+                throw new BugNotFoundException("Bug for Project with ID " +projectID+" does not exist");
+
+            System.out.println("Bugs filtered by " + filter + " for value " +value+ " for Project ID: " + projectID);
             System.out.println("-------------------------------------------------");
             System.out.println("Bug ID\tTitle\tDescription\tStatus\tPriority\tSeverity\tProject ID\tReporter ID\tAssignee ID\tCreated Date\tUpdated Date");
             for(Bug b : bugs){
-                System.out.println(b.getBugID() + "\t" + b.getTitle() + "\t" + b.getDesc() + "\t" + b.getStatus() + "\t" + b.getPriority() + "\t" + b.getSeverity() + "\t" + b.getProject().getProjectId() + "\t" + b.getReporter().getId() + "\t" + b.getAssignee().getId() + "\t" + b.getCreatedAt() + "\t" + b.getUpdatedAt());
+                System.out.println(b.getBugID() + "\t" + b.getTitle() + "\t" + b.getDesc() + "\t" + b.getStatus() + "\t" + b.getPriority() + "\t" + b.getSeverity() + "\t" + b.getProjectId() + "\t" + b.getReporterId() + "\t" + b.getAssigneeId() + "\t" + b.getCreatedAt() + "\t" + b.getUpdatedAt());
             }
-        } catch (BugNotFoundException e) {
+        } catch (BugNotFoundException | UserNotFoundException | SQLException e) {
             System.out.println("Bug not found");
-            logger.error("Bug not found", e.getMessage());
+            logger.error("Bug not found");
         } catch (DatabaseAccessException e) {
             System.out.println("Database access error");
-            logger.error("Database access error", e.getMessage());
+            logger.error("Database access error while displaying bugs by filter");
         }
 
     }
@@ -133,11 +138,11 @@ public class AppUI {
             System.out.println("-------------------------------------------------");
             System.out.println("Bug ID\tTitle\tDescription\tStatus\tPriority\tSeverity\tProject ID\tReporter ID\tAssignee ID\tCreated Date\tUpdated Date");
             for(Bug b : bugs){
-                System.out.println(b.getBugID() + "\t" + b.getTitle() + "\t" + b.getDesc() + "\t" + b.getStatus() + "\t" + b.getPriority() + "\t" + b.getSeverity() + "\t" + b.getProject().getProjectId() + "\t" + b.getReporter().getId() + "\t" + b.getAssignee().getId() + "\t" + b.getCreatedAt() + "\t" + b.getUpdatedAt());
+                System.out.println(b.getBugID() + "\t" + b.getTitle() + "\t" + b.getDesc() + "\t" + b.getStatus() + "\t" + b.getPriority() + "\t" + b.getSeverity() + "\t" + b.getProjectId() + "\t" + b.getReporterId() + "\t" + b.getAssigneeId() + "\t" + b.getCreatedAt() + "\t" + b.getUpdatedAt());
             }
         } catch (DatabaseAccessException e) {
             System.out.println("Database access error");
-            logger.error("Database access error", e.getMessage());
+            logger.error("Database access error while displaying all bugs");
         }
     }
 
@@ -280,7 +285,31 @@ public class AppUI {
     }
 
     private void assignBugToDeveloper() {
-        // Logic for assigning a bug to a developer
+
+
+        this.viewAllBugDetails();
+        System.out.println("LIST OF ALL DEVELOPERS: (UNDER CONSTRUCTION)");
+
+        boolean flag = false;
+        System.out.println("Enter Bug ID to assign: ");
+        int bugID = scanner.nextInt();
+        System.out.println("Here's a List of available developers: (UNDER PROGRESS)");
+        System.out.println("Enter Developer ID to assign: ");
+        int developerID = scanner.nextInt();
+        try {
+            flag = adminService.assignBugToDeveloper(bugID, developerID);
+        } catch (BugNotFoundException e) {
+            logger.error("Bug not found", e);
+        } catch (UserNotFoundException e) {
+            logger.error("User not found", e);
+        } catch (DatabaseAccessException e) {
+            logger.error("Database access error", e);
+        }
+
+        if(flag)
+            System.out.println("Bug with ID " +bugID+ " assigned to developer with ID " +developerID+ " successfully.");
+        else
+            System.out.println("Failed to assign bug to developer.");
     }
 
     private void closeBug() {

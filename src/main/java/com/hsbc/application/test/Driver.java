@@ -13,7 +13,7 @@ import java.sql.Connection;
 
 public class Driver {
     public static void main(String[] args) {
-        Connection connection = DBConfig.getConnection();
+
         AdminDAOImpl adminDAO = new AdminDAOImpl();
         AdminService adminService = new AdminServiceImpl(adminDAO);
 

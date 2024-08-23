@@ -5,6 +5,7 @@ import com.hsbc.application.model.Bug;
 import com.hsbc.application.model.Project;
 import com.hsbc.application.model.User;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface AdminService {
@@ -13,5 +14,6 @@ public interface AdminService {
     boolean createNewProject(Project project) throws DuplicateProjectException, ProjectLimitReachedException, DatabaseAccessException;
     List<Project> showProjects(int managerID) throws ProjectNotFoundException, DatabaseAccessException;
     List<Bug> showAllBugs() throws DatabaseAccessException;
-    List<Bug> showBugsByFilter(int projectID, String filter, String value) throws DatabaseAccessException, BugNotFoundException;
+    List<Bug> showBugsByFilter(int projectID, String filter, String value) throws DatabaseAccessException, BugNotFoundException, UserNotFoundException, SQLException;
+    boolean assignBugToDeveloper(int bugID, int developerID) throws BugNotFoundException, UserNotFoundException, DatabaseAccessException;
 }
