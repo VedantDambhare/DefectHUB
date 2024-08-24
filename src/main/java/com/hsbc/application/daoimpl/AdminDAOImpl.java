@@ -200,13 +200,14 @@ public class AdminDAOImpl implements AdminDAO {
 
                     //System.out.println("Project: " + project);
                     //System.out.println("Project List: " + plist);
-                    return plist;
+
                 }
+                return plist;
             }
         } catch (SQLException e) {
             throw new DatabaseAccessException("Error accessing the database: " + e.getMessage(), e);
         }
-        return plist;
+
     }
 
     @Override
@@ -231,37 +232,6 @@ public class AdminDAOImpl implements AdminDAO {
     @Override
     public List<Bug> showBugsByFilter(int projectID, String filter, String value) throws BugNotFoundException, DatabaseAccessException, UserNotFoundException, SQLException {
         List<Bug> blist;
-        String ogfilter;
-        //        if(filter.equalsIgnoreCase("status")) {
-        //            if (value.equalsIgnoreCase("NEW")) {
-        //                ogfilter = "NEW";
-        //            } else if (value.equalsIgnoreCase("IN_PROGRESS")) {
-        //                ogfilter = "IN_PROGRESS";
-        //            } else if (value.equalsIgnoreCase("RESOLVED")) {
-        //                ogfilter = "RESOLVED";
-        //            } else {
-        //                ogfilter = "CLOSED";
-        //            }
-        //        } else if (filter.equalsIgnoreCase("priority")) {
-        //            if (value.equalsIgnoreCase("LOW")){
-        //                ogfilter="LOW";
-        //            } else if (value.equalsIgnoreCase("MEDIUM")) {
-        //                ogfilter = "MEDIUM";
-        //            } else if (value.equalsIgnoreCase("HIGH")) {
-        //                ogfilter="HIGH";
-        //            }else {
-        //                ogfilter="CRITICAL";
-        //            }
-        //        }else {
-        //            if (value.equalsIgnoreCase("MINOR")){
-        //                ogfilter="MINOR";
-        //            } else if (value.equalsIgnoreCase("MAJOR")) {
-        //                ogfilter="MAJOR";
-        //            }else{
-        //                ogfilter="BLOCKER";
-        //            }
-        //        }
-
 
         String query = "SELECT * FROM Bugs WHERE projectId = ? AND " + filter + " = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {

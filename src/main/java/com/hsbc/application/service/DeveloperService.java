@@ -1,18 +1,21 @@
-package com.hsbc.application.dao;
+package com.hsbc.application.service;
 
 import com.hsbc.application.exceptions.BugNotFoundException;
 import com.hsbc.application.exceptions.ProjectNotFoundException;
+import com.hsbc.application.exceptions.UserNotFoundException;
 import com.hsbc.application.model.Bug;
 import com.hsbc.application.model.Project;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface DeveloperDao {
+public interface DeveloperService {
 
     Optional<List<Bug>> getAssignedBugs(int developerId) throws BugNotFoundException;
-    boolean bugStatus(int bugId, String status);
-    Optional<Bug> getBugDetails(int bugID) throws BugNotFoundException;
-    Optional<Project> viewAssignedProjects(int developerID) throws ProjectNotFoundException;
 
+    boolean updateBugStatus(int bugId, String status);
+
+    Optional<Bug> getBugDetails(int bugID) throws BugNotFoundException;
+
+    Optional<Project> viewAssignedProjects(int developerID) throws ProjectNotFoundException;
 }

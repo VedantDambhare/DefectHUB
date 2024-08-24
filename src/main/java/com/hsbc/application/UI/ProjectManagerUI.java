@@ -1,8 +1,6 @@
 package com.hsbc.application.UI;
 
 
-import com.hsbc.application.dao.AdminDAO;
-import com.hsbc.application.daoimpl.AdminDAOImpl;
 import com.hsbc.application.exceptions.*;
 import com.hsbc.application.model.Bug;
 import com.hsbc.application.model.Project;
@@ -10,32 +8,38 @@ import com.hsbc.application.model.ProjectManager;
 import com.hsbc.application.model.User;
 import com.hsbc.application.service.AdminService;
 import com.hsbc.application.service.ProjectService;
-import com.hsbc.application.service.ProjectServiceImpl;
 import org.slf4j.Logger;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
-public class AppUI {
+public class ProjectManagerUI {
     private AdminService adminService;
     private ProjectService projectService;
     private Scanner scanner;
     Logger logger;
 
-    public AppUI(AdminService adminService, ProjectService projectService) {
+    public ProjectManagerUI(AdminService adminService, ProjectService projectService) {
         this.adminService = adminService;
         this.projectService = projectService;
         this.scanner = new Scanner(System.in);
-        this.logger = org.slf4j.LoggerFactory.getLogger(AppUI.class);
+        this.logger = org.slf4j.LoggerFactory.getLogger(ProjectManagerUI.class);
     }
 
-    public AppUI() {
+    public ProjectManagerUI() {
 
     }
 
     public void start() {
+
+
         while (true) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             System.out.println("\n Welcome to the Bug Tracking System");
             System.out.println("1. View User Information");
             System.out.println("2. Create New Project");
@@ -48,6 +52,7 @@ public class AppUI {
             System.out.println("9. Close Bug");
             System.out.println("10. Exit");
 
+            System.out.println("Enter your choice: ");
             int choice = scanner.nextInt();
 
             switch (choice) {
@@ -333,7 +338,6 @@ public class AppUI {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
         try {
             flag = adminService.closeBug(bugID, uname, upass);
             if (flag)
@@ -345,9 +349,6 @@ public class AppUI {
         } catch (DatabaseAccessException e) {
             logger.error("Database access error", e);
         }
-
-
-
     }
 }
 
