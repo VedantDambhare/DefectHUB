@@ -28,30 +28,8 @@ public class TesterUI {
             int ch = sc.nextInt();
             switch(ch){
                 case 1:
-                    System.out.println("Enter bug Title");
-                    String title = sc.next();
-                    System.out.println("Enter bug Description");
-                    String desc = sc.next();
-                    String status = "NEW";
-                    System.out.println("Enter bug Priority ('LOW','MEDIUM','HIGH','CRITICAL') ");
-                    sc.nextLine();
-                    String priority = sc.nextLine();
-                    System.out.println("Enter Bug Severity ('MINOR','MAJOR','BLOCKER')");
-                    String severity = sc.next();
-                    System.out.println("Enter Project Id");
-                    int projectId = sc.nextInt();
-                    int reporterId = CurrentSession.getUserId();
-
-                    LocalDateTime created_at = LocalDateTime.now();
-                    DateTimeFormatter sqlFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//                    String created_at = now.format(sqlFormatter);
-                    System.out.println("Adding bug...");
-                    if(tester.addNewBug(new Bug(title,desc,status,priority,severity,projectId,reporterId,created_at,created_at)))
-                        System.out.println("Added Bug successfully..");
-                    else System.out.println("Failed to add Bug");
-
+                    addNewBug(sc,tester);
                     break;
-
 
                 case 2:
                     tester.getAllBugs().forEach(System.out::println);
@@ -87,4 +65,29 @@ public class TesterUI {
         }
         sc.close();
     }
+
+    private void addNewBug(Scanner sc, TesterDao tester){
+        System.out.println("Enter bug Title");
+        String title = sc.next();
+        System.out.println("Enter bug Description");
+        String desc = sc.next();
+        String status = "NEW";
+        System.out.println("Enter bug Priority ('LOW','MEDIUM','HIGH','CRITICAL') ");
+        sc.nextLine();
+        String priority = sc.nextLine();
+        System.out.println("Enter Bug Severity ('MINOR','MAJOR','BLOCKER')");
+        String severity = sc.next();
+        System.out.println("Enter Project Id");
+        int projectId = sc.nextInt();
+        int reporterId = CurrentSession.getUserId();
+
+        LocalDateTime created_at = LocalDateTime.now();
+        DateTimeFormatter sqlFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//                    String created_at = now.format(sqlFormatter);
+        System.out.println("Adding bug...");
+        if(tester.addNewBug(new Bug(title,desc,status,priority,severity,projectId,reporterId,created_at,created_at)))
+            System.out.println("Added Bug successfully..");
+        else System.out.println("Failed to add Bug");
+    }
+
 }
