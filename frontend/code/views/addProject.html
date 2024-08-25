@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Project</title>
+    <link rel="stylesheet" href="../styles5.css">
+</head>
+
+<body>
+    <h1 class="topic">Bug Tracking Application</h1>
+    <div class="container">
+        <div class="heading">
+            <p>Create New Project</p>
+        </div>
+        <div class="content">
+            <form id="project-form">
+                <label for="project-name">Project Name:</label>
+                <input type="text" id="project-name" name="project-name" required>
+                
+                <label for="start-date">Start Date:</label>
+                <input type="date" id="start-date" name="start-date" required>
+
+                <label for="team-members">Assign Team Members:</label>
+                <ul id="team-members">
+                    <li><input type="checkbox" id="member1" name="team-member" value="member1"> Member 1 (Developer)</li>
+                    <li><input type="checkbox" id="member2" name="team-member" value="member2"> Member 2 (Tester)</li>
+                  
+                </ul>
+                
+                <input type="hidden" id="project-status" name="project-status" value="In Progress">
+                
+                <input type="hidden" id="project-id" name="project-id" value="<!-- Insert unique ID here -->">
+                
+                <button type="submit" onclick="validateProjectForm()">Create Project</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        
+        function validateProjectForm() {
+            
+        }
+    </script>
+</body>
+
+</html>

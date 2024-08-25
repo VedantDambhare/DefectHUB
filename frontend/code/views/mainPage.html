@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="../styles7.css">
+</head>
+
+<body>
+    <!-- Toggle Button -->
+    <button class="toggle-btn" onclick="toggleSidebar()">☰ Menu</button>
+    
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- <h2>Menu</h2> -->
+        <ul>
+            <li><a href="./dashboard.html">Dashboard</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="./teams.html">Teams</a></li>
+            <li><a href="./index.html">Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container admin-page">
+        <div class="profile-section">
+            <img src="../resources/download.jpg" alt="Profile Picture" class="profile-pic">
+            <div class="profile-details">
+                <h1>Karthik C Kallur</h1>
+                <p><strong>Role:</strong> Project Manager</p>
+                <p><strong>Email:</strong> <a href="mailto:kckallur40@gmail.com">kckallur40@gmail.com</a></p>
+            </div>
+            <p><strong>Last Login:</strong> <span>13:56:22 IST</span></p>
+        </div>
+
+        <div class="project-managed">
+            <h2>Projects Managed by You</h2>
+            <table class="project-table">
+                <thead>
+                    <tr>
+                        <th>Project Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="projects-html/p1.html" target="_blank">A seamless E-trading facility to clients in the U.S.</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="projects-html/p2.html" target="_blank">Developing some APIs to integrate the existing tech stack.</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="projects-html/p3.html" target="_blank">Using JDBC drivers, update the employees pay-grade.</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="projects-html/p4.html" target="_blank">Application for internal auditing.</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <button class="add-project-btn" onclick="addProject()">Add Project</button>
+    </div>
+
+    <script src="../scripts.js"></script>
+</body>
+
+</html>

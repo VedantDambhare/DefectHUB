@@ -1,0 +1,137 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+}
+
+/* Center the main heading at the top */
+.topic {
+    font-size: 32px;
+    color: #333333;
+    margin-top: 80px;
+    margin-bottom: 80px;
+    text-align: center;
+    width: 100%;
+}
+
+.heading-topic{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+}
+
+.heading-topic img{
+    height: 60px;
+    width: 60px;
+}
+
+/* Container styling */
+.container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    padding: 20px;
+    margin-top: 30px;
+}
+
+/* Heading styles for form titles */
+.heading p {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+/* Form styles */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-div {
+    margin-bottom: 15px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+select {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: calc(100% - 22px); /* Adjust for padding */
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="date"]:focus,
+select:focus {
+    border-color: #333333;
+    outline: none;
+}
+
+
+button[type="submit"] {
+    background-color: #333333;
+    color: #ffffff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+button[type="submit"]:hover {
+    background-color: #555555;
+}
+
+/* Assign Team Members section styling */
+ul#team-members {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul#team-members li {
+    margin-bottom: 10px;
+}
+
+/* Sign up and other options */
+.option p {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.option a {
+    color: #333333;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.option a:hover {
+    text-decoration: underline;
+}
+footer{
+    margin-top: 110px;
+    border-radius: 15px;
+    text-align: center; 
+    padding: 0px 20px; 
+    background-color: #d6b5b5;
+    color: #000000; 
+}

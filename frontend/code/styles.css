@@ -1,0 +1,166 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    text-decoration: none;
+}
+
+body {
+    background-color: rgb(56, 121, 178);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    padding: 20px 20px;
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    background-color: aqua;
+    gap: 30px;
+    width: 40%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+.heading {
+    padding-bottom: 10px;
+    background-color: bisque;
+    text-align: center;
+    padding-top: 20px;
+    font-size: 25px;
+}
+
+.content {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    margin-inline: auto;
+}
+
+.content input {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.topic {
+    font-size: 40px;
+    text-align: center;
+    padding-top: 25px;
+}
+
+.option {
+    margin-top: 40px;
+    margin-left: 30px;
+}
+
+.option a {
+    border-radius: 10px;
+    padding: 5px 10px;
+    background-color: rgb(117, 41, 8);
+    color: aliceblue;
+}
+
+.option a:hover {
+    transition: all 0.4s;
+    background-color: black;
+    color: aliceblue;
+}
+
+#reg-form {
+    display: flex;
+    flex-direction: column;
+}
+
+button {
+    margin-top: 20px;
+    border-radius: 5px;
+    padding: 10px 5px;
+}
+
+button:hover {
+    cursor: pointer;
+    transition: all 0.4s;
+    color: #fff;
+    background-color: black;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-form input {
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+.login-form button {
+    width: 30%;
+}
+
+.mainPage-c {
+    width: 90%;
+    height: 100vh;
+}
+
+.mainPage-c button{
+    align-self: center;
+    width: 10%;
+}
+
+.last-login-time {
+    text-align: end;
+}
+
+.last-login-time span {
+    padding: 3px 5px;
+    border-radius: 10px;
+    background-color: antiquewhite;
+}
+
+table.minimalistBlack {
+    border: 3px solid #000000;
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+}
+
+table.minimalistBlack td,
+table.minimalistBlack th {
+    border: 1px solid #000000;
+    padding: 5px 4px;
+}
+
+table.minimalistBlack tbody td {
+    background-color: #eebbbb;
+    font-size: 13px;
+}
+
+table.minimalistBlack thead {
+    background: #CFCFCF;
+    background: -moz-linear-gradient(top, #dbdbdb 0%, #d3d3d3 66%, #CFCFCF 100%);
+    background: -webkit-linear-gradient(top, #dbdbdb 0%, #d3d3d3 66%, #CFCFCF 100%);
+    background: linear-gradient(to bottom, #dbdbdb 0%, #d3d3d3 66%, #CFCFCF 100%);
+    border-bottom: 3px solid #000000;
+}
+
+table.minimalistBlack thead th {
+    font-size: 15px;
+    font-weight: bold;
+    color: #000000;
+    text-align: left;
+}
+
+.add-project{
+    display: flex;
+    flex-direction: column;
+    
+}
+

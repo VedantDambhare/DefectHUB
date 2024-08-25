@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bug Tracker Dashboard</title>
+    <link rel="stylesheet" href="../styles7.css">
+    <!-- Include Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header Section -->
+        <header class="dashboard-header">
+            <h1>Bug Tracker Dashboard</h1>
+        </header>
+
+        <!-- Main Content Section -->
+        <main class="dashboard-main">
+            <!-- Row 1: Overview Cards -->
+            <div class="dashboard-row">
+                <div class="card">
+                    <h2>Total Bugs</h2>
+                    <p>120</p>
+                </div>
+                <div class="card">
+                    <h2>Resolved Bugs</h2>
+                    <p>80</p>
+                </div>
+                <div class="card">
+                    <h2>Open Bugs</h2>
+                    <p>40</p>
+                </div>
+            </div>
+
+            <!-- Row 2: Charts -->
+            <div class="dashboard-row">
+                <!-- Pie Chart -->
+                <div class="chart-container">
+                    <h2>Bugs by Status</h2>
+                    <canvas id="statusChart"></canvas>
+                </div>
+                <!-- Line Graph -->
+                <div class="chart-container">
+                    <h2>Monthly Bug Trend</h2>
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript to Initialize Charts -->
+    <script>
+        // Pie Chart for Bugs by Status
+        const ctxStatus = document.getElementById('statusChart').getContext('2d');
+        const statusChart = new Chart(ctxStatus, {
+            type: 'pie',
+            data: {
+                labels: ['Open', 'In Progress', 'Resolved', 'Closed'],
+                datasets: [{
+                    label: 'Bugs by Status',
+                    data: [20, 15, 30, 55],
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+                }]
+            },
+        });
+
+        // Line Graph for Monthly Bug Trend
+        const ctxTrend = document.getElementById('trendChart').getContext('2d');
+        const trendChart = new Chart(ctxTrend, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'Bugs Reported',
+                    data: [10, 25, 20, 30, 40, 35, 50, 45, 30, 25, 15, 20],
+                    fill: false,
+                    borderColor: '#4A90E2',
+                    tension: 0.1
+                }]
+            },
+        });
+    </script>
+</body>
+</html>

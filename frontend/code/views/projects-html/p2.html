@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Details</title>
+    <link rel="stylesheet" href="../../styles6.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="heading">Project Details</h1>
+
+        <!-- Project Information Section -->
+        <div class="project-info">
+            <h2 id="project-name">Developing some APIs to integrate the existing tech stack.</h2>
+            <p><strong>Start Date:</strong> <span id="start-date">2024-08-01</span></p>
+            <p><strong>Project Manager:</strong> <span id="project-manager">Vrushali Datir</span></p>
+            <p><strong>Team Members:</strong></p>
+            <ul id="team-members">
+                <li>Vedant - Tester</li>
+                <li>Harshal - Developer</li>
+                <!-- <li></li> -->
+            </ul>
+        </div>
+
+        <!-- Bugs Section -->
+        <div class="bugs-section">
+            <h2>Bugs</h2>
+            <input type="text" id="search-bugs" placeholder="Search bugs..." class="search-input">
+            <div id="bugs-list" class="bugs-list">
+                <!-- Dynamic content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Example JavaScript to dynamically update bugs list
+        const bugs = [
+            { id: "BUG-001", title: "Login issue", description: "Users are unable to log in.", assignedTo: "Developer A", status: "Open" },
+            // { id: "BUG-002", title: "UI glitch", description: "Button alignment is off.", assignedTo: "Tester B", status: "Open" },
+            { id: "BUG-003", title: "Performance issue", description: "The application is slow.", assignedTo: "", status: "In Progress" }
+        ];
+
+        const bugsListDiv = document.getElementById('bugs-list');
+        const searchInput = document.getElementById('search-bugs');
+
+        function renderBugs(bugs) {
+            bugsListDiv.innerHTML = '';
+            bugs.forEach(bug => {
+                const bugDiv = document.createElement('div');
+                bugDiv.className = 'bug';
+
+                const bugDetails = `
+                    <p><strong>ID:</strong> ${bug.id}</p>
+                    <p><strong>Title:</strong> ${bug.title}</p>
+                    <p><strong>Description:</strong> ${bug.description}</p>
+                    <p><strong>Assigned To:</strong> ${bug.assignedTo || 'Unassigned'}</p>
+                    <p><strong>Status:</strong> ${bug.status}</p>
+                    <button onclick="assignBug('${bug.id}')">Assign to Developer</button>
+                    <button onclick="closeBug('${bug.id}')">Close Bug</button>
+                `;
+
+                bugDiv.innerHTML = bugDetails;
+                bugsListDiv.appendChild(bugDiv);
+            });
+        }
+
+        function filterBugs() {
+            const query = searchInput.value.toLowerCase();
+            const filteredBugs = bugs.filter(bug => bug.title.toLowerCase().includes(query));
+            renderBugs(filteredBugs);
+        }
+
+        function assignBug(bugId) {
+            alert(`Bug ${bugId} assigned to a developer.`);
+            // Logic to assign the bug
+        }
+
+        function closeBug(bugId) {
+            alert(`Bug ${bugId} closed.`);
+            // Logic to close the bug
+        }
+
+        searchInput.addEventListener('input', filterBugs);
+
+        // Initial render
+        renderBugs(bugs);
+    </script>
+</body>
+
+</html>

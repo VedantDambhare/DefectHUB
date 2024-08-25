@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tester Profile</title>
+    <link rel="stylesheet" href="../styles2.css">
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+        <div class="sidebar-content">
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="testerDashboard.html">Dashboard</a></li>
+                <li><a href="testerProfile.html">Profile</a></li>
+                <li><a href="#projects.html">Projects</a></li>
+                <li><a href="./index.html">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="profile-container">
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <img src="https://via.placeholder.com/100" alt="Profile Picture" class="profile-pic">
+                <div class="profile-header-text">
+                    <h1>John Doe</h1>
+                    <p>Quality Assurance Tester</p>
+                </div>
+            </div>
+
+            <!-- Personal and Official Details Section -->
+            <div class="details-container">
+                <!-- Personal Details -->
+                <div class="details-card">
+                    <h2>Personal Details</h2>
+                    <div class="details-grid">
+                        <div class="detail-item"><strong>Full Name:</strong> John Doe</div>
+                        <div class="detail-item"><strong>Age:</strong> 29</div>
+                        <div class="detail-item"><strong>Email:</strong> johndoe@example.com</div>
+                        <div class="detail-item"><strong>Phone:</strong> +123-456-7890</div>
+                        <div class="detail-item"><strong>Address:</strong> 1234 Elm Street, Springfield, IL</div>
+                    </div>
+                </div>
+
+                <!-- Official Details -->
+                <div class="details-card">
+                    <h2>Official Details</h2>
+                    <div class="details-grid">
+                        <div class="detail-item"><strong>Employee ID:</strong> EMP00123</div>
+                        <div class="detail-item"><strong>Position:</strong> Quality Assurance Tester</div>
+                        <div class="detail-item"><strong>Department:</strong> Software Development</div>
+                        <div class="detail-item"><strong>Joining Date:</strong> January 10, 2020</div>
+                        <div class="detail-item"><strong>Projects Involved:</strong> Project Alpha, Project Beta, Project Gamma</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Profile Button -->
+            <div class="edit-button-container">
+                <button class="edit-profile-btn" id="editProfileBtn">Edit Profile</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../scripts.js"></script>
+</body>
+
+</html>

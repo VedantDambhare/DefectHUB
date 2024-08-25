@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="../styles1.css">
+</head>
+
+<body>
+    <div class="heading-topic">
+        <img src="https://img.icons8.com/?size=100&id=37fQEyOEKo18&format=png&color=000000" alt="logo">
+        <h1 class="topic">Bug Tracking Application</h1>
+    </div>
+    <div class="container">
+
+        <div class="heading">
+            <p>User Registration</p>
+        </div>
+        <div class="content">
+            <form id="reg-form">
+
+                <div class="row">
+                    Name: <input type="text" id="name-inp">
+                    Department: <input type="text" id="dept-inp">
+                </div>
+                
+                <div class="row">
+                    Email: <input type="email" id="email-inp">
+                    Username: <input type="text" id="uname-inp">
+                </div>
+                
+                <div class="row">
+                    Password: <input type="password" id="reg-pwd-inp">
+                    Confirm Password: <input type="text" id="reg-conf-pwd-inp">
+                </div>
+                
+                <label for="role">Role:</label>
+                <select id="role">
+                    <option selected value="PM">Project Manager</option>
+                    <option value="tester">Tester</option>
+                    <option value="dev">Developer</option>
+                </select>
+
+                <button type="submit" onclick="validateRegistration()">Register</button>
+            </form>
+        </div>
+
+    </div>
+
+
+    <script src="../scripts.js"></script>
+</body>
+
+</html>

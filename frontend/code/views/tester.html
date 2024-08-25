@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tester</title>
+    <link rel="stylesheet" href="../styles2.css">
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+        <div class="sidebar-content">
+            <!-- <h2>Navigation</h2> -->
+            <ul>
+                <li><a href="./testerDashboard.html">Dashboard</a></li>
+                <li><a href="./projects.html">Projects</a></li>
+                <li><a href="./testerProfile.html">Profile</a></li>
+                <!-- <li><a href="#settings">Settings</a></li> -->
+                <li><a href="./index.html">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content-tester">
+        <div class="container">
+            <h1 class="heading">Tester</h1>
+
+            <!-- User Information Section -->
+            <div class="user-info">
+                <p><strong>Username:</strong> <span id="username">tester123</span></p>
+                <p><strong>Email:</strong> <span id="email">tester@example.com</span></p>
+            </div>
+
+            <!-- Bug Filter and Search Section -->
+            <div class="controls">
+                <input type="text" id="searchBar" placeholder="Search for projects or bugs..." onkeyup="filterContent()">
+                <select id="statusFilter" onchange="filterContent()">
+                    <option value="all">All Bugs</option>
+                    <option value="open">Open</option>
+                    <option value="closed">Closed</option>
+                </select>
+            </div>
+
+            <!-- Status Overview Section -->
+            <div class="status-overview">
+                <div class="status-item">
+                    <h3>Total Bugs</h3>
+                    <p id="totalBugs">15</p>
+                </div>
+                <div class="status-item">
+                    <h3>Open Bugs</h3>
+                    <p id="openBugs">8</p>
+                </div>
+                <div class="status-item">
+                    <h3>Closed Bugs</h3>
+                    <p id="closedBugs">7</p>
+                </div>
+            </div>
+
+            <!-- Project Information Section -->
+            <div id="project-info" class="project-info">
+                <!-- Dynamic Content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar toggle functionality
+        document.getElementById('sidebarToggle').addEventListener('click', function () {
+            document.getElementById('sidebar').classList.toggle('active');
+        });
+
+        // Example JavaScript to dynamically update project info
+        const projects = [
+            {
+                name: "Project Alpha",
+                bugs: ["Bug #1: Login issue", "Bug #2: UI glitch", "Bug #3: Performance issue"],
+                status: "open"
+            },
+            {
+                name: "Project Beta",
+                bugs: ["Bug #1: Data not saving", "Bug #2: Incorrect calculations"],
+                status: "closed"
+            },
+            {
+                name: "Project Gamma",
+                bugs: ["Bug #1: Page not loading", "Bug #2: Missing icons", "Bug #3: UI alignment issue"],
+                status: "open"
+            },
+            {
+                name: "Project Delta",
+                bugs: ["Bug #1: API failure", "Bug #2: Slow response time", "Bug #3: Data corruption"],
+                status: "closed"
+            },
+            {
+                name: "Project Epsilon",
+                bugs: ["Bug #1: Security vulnerability", "Bug #2: Memory leak", "Bug #3: Crashing on startup"],
+                status: "open"
+            }
+        ];
+
+        const projectInfoDiv = document.getElementById('project-info');
+
+        function loadProjects() {
+            projectInfoDiv.innerHTML = "";
+            if (projects.length === 0) {
+                projectInfoDiv.innerHTML = "<p>You are not assigned to any projects.</p>";
+            } else {
+                projects.forEach(project => {
+                    const projectDiv = document.createElement('div');
+                    projectDiv.className = 'project';
+                    projectDiv.setAttribute('data-status', project.status);
+
+                    const projectTitle = document.createElement('h2');
+                    projectTitle.textContent = project.name;
+
+                    const bugList = document.createElement('ul');
+                    project.bugs.forEach(bug => {
+                        const bugItem = document.createElement('li');
+                        bugItem.textContent = bug;
+                        bugList.appendChild(bugItem);
+                    });
+
+                    const reportBugLink = document.createElement('a');
+                    reportBugLink.href = "report_bug.html";
+                    reportBugLink.textContent = "Report a New Bug";
+                    reportBugLink.className = "report-bug-link";
+
+                    const expandButton = document.createElement('button');
+                    expandButton.className = 'expand-btn';
+                    expandButton.textContent = 'Expand';
+                    expandButton.onclick = () => {
+                        bugList.classList.toggle('expanded');
+                        expandButton.textContent = bugList.classList.contains('expanded') ? 'Collapse' : 'Expand';
+                    };
+
+                    projectDiv.appendChild(projectTitle);
+                    projectDiv.appendChild(bugList);
+                    projectDiv.appendChild(expandButton);
+                    projectDiv.appendChild(reportBugLink);
+                    projectInfoDiv.appendChild(projectDiv);
+                });
+            }
+        }
+
+        function filterContent() {
+            const searchQuery = document.getElementById('searchBar').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+
+            document.querySelectorAll('.project').forEach(project => {
+                const matchesSearch = project.querySelector('h2').textContent.toLowerCase().includes(searchQuery);
+                const matchesStatus = statusFilter === 'all' || project.getAttribute('data-status') === statusFilter;
+
+                if (matchesSearch && matchesStatus) {
+                    project.style.display = 'block';
+                } else {
+                    project.style.display = 'none';
+                }
+            });
+        }
+
+        // Initial load
+        loadProjects();
+    </script>
+</body>
+
+</html>

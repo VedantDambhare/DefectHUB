@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Dashboard</title>
+    <link rel="stylesheet" href="../styles4.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- Toggle Sidebar Button -->
+    <button id="sidebar-toggle" class="toggle-btn"><i class="fas fa-bars"></i> Menu</button>
+
+    <!-- Dark Mode Toggle Button -->
+    <button id="dark-mode-toggle" class="toggle-btn"><i class="fas fa-moon"></i> Dark Mode</button>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h2>Navigation</h2>
+        <ul>
+            <li><a href="./projects.html"><i class="fas fa-tasks"></i> Projects</a></li>
+            <li><a href="./dev-tasks.html"><i class="fas fa-bug"></i> Tasks</a></li>
+            <li><a href="./index.html"><i class="fas fa-cog"></i> Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container" id="main-content">
+        <div class="main-content">
+            <h1 class="heading">Developer Dashboard</h1>
+
+            <!-- User Information Section -->
+            <div class="user-info">
+                <p><strong>Username:</strong> <span id="username">devUser123</span></p>
+                <p><strong>Email:</strong> <span id="email">developer@example.com</span></p>
+            </div>
+
+            <!-- Project Information Section -->
+            <div id="project-info" class="project-info">
+                <h2>Your Projects</h2>
+                <!-- Dynamic Project Content will be inserted here -->
+            </div>
+
+            <!-- Task Section for Closing Bugs -->
+            <div id="task-section" class="task-section">
+                <h2>Tasks</h2>
+                <p id="no-task-msg">No bugs available to close.</p>
+                <div id="bug-list" class="bug-list">
+                    <!-- Bug list will be dynamically inserted here -->
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+           
+        </div>
+    </div>
+
+    <script>
+        // Sidebar toggle functionality
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const body = document.body;
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            mainContent.classList.toggle('shifted');
+        });
+
+        // Toggle dark mode
+        darkModeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const currentMode = body.classList.contains('dark-mode') ? 'Dark Mode' : 'Light Mode';
+            darkModeToggle.innerHTML = `<i class="fas fa-moon"></i> ${currentMode}`;
+        });
+
+        // Example JavaScript to dynamically update project info and tasks
+        const projects = [
+            {
+                name: "Project Alpha",
+                manager: "Manager One",
+                startDate: "2024-08-01",
+                members: ["devUser123", "tester456", "devUser789"]
+            },
+            {
+                name: "Project Beta",
+                manager: "Manager Two",
+                startDate: "2024-09-15",
+                members: ["devUser123", "devUser456", "tester123"]
+            }
+        ];
+
+        const bugs = [
+            { id: "BUG-001", title: "Login issue", status: "Open" },
+            { id: "BUG-002", title: "UI glitch", status: "Open" },
+            { id: "BUG-003", title: "Data inconsistency", status: "Open" }
+        ];
+
+        const projectInfoDiv = document.getElementById('project-info');
+        const bugListDiv = document.getElementById('bug-list');
+        const noTaskMsg = document.getElementById('no-task-msg');
+
+        if (projects.length === 0) {
+            projectInfoDiv.innerHTML = "<p>You are not assigned to any projects.</p>";
+        } else {
+            projects.forEach(project => {
+                const projectSection = document.createElement('section');
+                projectSection.className = 'project-section';
+
+                const projectDetails = `
+                    <h3>${project.name}</h3>
+                    <p><strong>Manager:</strong> ${project.manager}</p>
+                    <p><strong>Start Date:</strong> ${project.startDate}</p>
+                    <p><strong>Members:</strong> ${project.members.join(', ')}</p>
+                `;
+
+                projectSection.innerHTML = projectDetails;
+                projectInfoDiv.appendChild(projectSection);
+            });
+        }
+
+        if (bugs.length > 0) {
+            noTaskMsg.style.display = "none";
+            bugs.forEach(bug => {
+                const bugDiv = document.createElement('div');
+                bugDiv.className = 'bug';
+
+                const bugDetails = `
+                    <p><strong>ID:</strong> ${bug.id}</p>
+                    <p><strong>Title:</strong> ${bug.title}</p>
+                    <button class="close-btn" onclick="markBugClosed('${bug.id}')">Mark as Closed</button>
+                `;
+
+                bugDiv.innerHTML = bugDetails;
+                bugListDiv.appendChild(bugDiv);
+            });
+        } else {
+            bugListDiv.style.display = "none";
+        }
+
+        function markBugClosed(bugId) {
+            alert(`Bug ${bugId} marked as closed.`);
+            // Logic to update bug status and refresh the task list
+        }
+    </script>
+</body>
+
+</html>

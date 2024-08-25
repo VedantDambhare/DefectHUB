@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Task Dashboard</title>
+    <link rel="stylesheet" href="../styles8.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Developer Dashboard</h2>
+        <ul>
+            <li><a href="#tasks"><i class="fas fa-tasks"></i> Tasks</a></li>
+            <li><a href="#profile"><i class="fas fa-user"></i> Profile</a></li>
+            <li><a href="#settings"><i class="fas fa-cog"></i> Settings</a></li>
+            <li><a href="#logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1>Assigned Tasks</h1>
+
+        <!-- Filter and Search -->
+        <div class="task-controls">
+            <input type="text" id="task-search" placeholder="Search tasks...">
+            <select id="task-filter">
+                <option value="all">All</option>
+                <option value="open">Open</option>
+                <option value="in-progress">In Progress</option>
+                <option value="closed">Closed</option>
+            </select>
+        </div>
+
+        <!-- Task List -->
+        <div id="task-list" class="task-list">
+            <!-- Dynamic content will be inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // Sample tasks data
+        const tasks = [
+            { id: "TASK-001", title: "Fix Login Bug", status: "Open", description: "Issue with login validation." },
+            { id: "TASK-002", title: "Improve UI", status: "In Progress", description: "Enhance the homepage UI design." },
+            { id: "TASK-003", title: "Database Optimization", status: "Closed", description: "Optimize queries for better performance." },
+            { id: "TASK-004", title: "Implement Dark Mode", status: "Open", description: "Add dark mode feature to the dashboard." }
+        ];
+
+        const taskListDiv = document.getElementById('task-list');
+        const taskSearch = document.getElementById('task-search');
+        const taskFilter = document.getElementById('task-filter');
+
+        // Function to display tasks
+        function displayTasks(filter = "all") {
+            taskListDiv.innerHTML = "";
+            const filteredTasks = tasks.filter(task => filter === "all" || task.status.toLowerCase() === filter);
+
+            filteredTasks.forEach(task => {
+                const taskDiv = document.createElement('div');
+                taskDiv.className = 'task-card';
+                taskDiv.innerHTML = `
+                    <h3>${task.title}</h3>
+                    <p><strong>Status:</strong> ${task.status}</p>
+                    <p>${task.description}</p>
+                    <button class="action-btn">View Details</button>
+                `;
+                taskListDiv.appendChild(taskDiv);
+            });
+        }
+
+        // Event listeners for search and filter
+        taskSearch.addEventListener('input', () => {
+            const searchValue = taskSearch.value.toLowerCase();
+            const filteredTasks = tasks.filter(task =>
+                task.title.toLowerCase().includes(searchValue) || task.description.toLowerCase().includes(searchValue)
+            );
+            taskListDiv.innerHTML = "";
+            filteredTasks.forEach(task => {
+                const taskDiv = document.createElement('div');
+                taskDiv.className = 'task-card';
+                taskDiv.innerHTML = `
+                    <h3>${task.title}</h3>
+                    <p><strong>Status:</strong> ${task.status}</p>
+                    <p>${task.description}</p>
+                    <button class="action-btn">View Details</button>
+                `;
+                taskListDiv.appendChild(taskDiv);
+            });
+        });
+
+        taskFilter.addEventListener('change', (e) => {
+            displayTasks(e.target.value);
+        });
+
+        // Initial display
+        displayTasks();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report a New Bug</title>
+    <link rel="stylesheet" href="../styles3.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="heading">Report a New Bug</h1>
+
+        <form id="report-bug-form" class="bug-form">
+            <!-- Project Name -->
+            <div class="form-group">
+                <label for="project-name">Project Name:</label>
+                <select id="project-name" required>
+                    <!-- Options will be dynamically added based on assigned projects -->
+                    <option value="project-alpha">Project Alpha (In-Progress)</option>
+                    <option value="project-beta">Project Beta (In-Progress)</option>
+                    <!-- Additional project options can be added here -->
+                </select>
+            </div>
+
+            <!-- Bug Title -->
+            <div class="form-group">
+                <label for="bug-title">Title:</label>
+                <input type="text" id="bug-title" required>
+            </div>
+
+            <!-- Bug Description -->
+            <div class="form-group">
+                <label for="bug-description">Description:</label>
+                <textarea id="bug-description" rows="5" required></textarea>
+            </div>
+
+            <!-- Severity Level -->
+            <div class="form-group">
+                <label for="severity">Severity Level:</label>
+                <select id="severity" required>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                    <option value="critical">Critical</option>
+                </select>
+            </div>
+
+            <!-- Hidden Fields -->
+            <input type="hidden" id="bug-id">
+            <input type="hidden" id="created-by">
+            <input type="hidden" id="created-on">
+
+            <!-- Submit Button -->
+            <button type="submit">Submit Bug Report</button>
+        </form>
+    </div>
+
+    <script>
+        // JavaScript to populate hidden fields and handle form submission
+        document.getElementById('bug-id').value = 'BUG-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+        document.getElementById('created-by').value = 'tester123'; // Replace with dynamic user data
+        document.getElementById('created-on').value = new Date().toLocaleString();
+
+        document.getElementById('report-bug-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            // Logic to handle form submission, e.g., send data to the server
+            alert('Bug reported successfully!');
+        });
+    </script>
+</body>
+
+</html>
