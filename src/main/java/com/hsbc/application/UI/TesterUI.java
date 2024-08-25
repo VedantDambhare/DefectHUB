@@ -14,8 +14,7 @@ public class TesterUI {
         Scanner sc = new Scanner(System.in);
         TesterDao tester = new TesterDaoImpl();
 
-        boolean flag=true;
-        while(flag){
+        while(true){
             System.out.println("Enter choice");
             System.out.println("1. Add new Bug");
             System.out.println("2. Show All Bugs Raised");
@@ -56,14 +55,14 @@ public class TesterUI {
 
                 case 6:
                     System.out.println("Exiting...");
-                    flag=false;
+                    sc.close();
+                    System.exit(0);
                     break;
 
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
         }
-        sc.close();
     }
 
     private void addNewBug(Scanner sc, TesterDao tester){

@@ -23,7 +23,6 @@ public class ProjectManagerUI {
     public ProjectManagerUI(AdminService adminService, ProjectService projectService) {
         this.adminService = adminService;
         this.projectService = projectService;
-        this.scanner = new Scanner(System.in);
         this.logger = org.slf4j.LoggerFactory.getLogger(ProjectManagerUI.class);
     }
 
@@ -33,6 +32,7 @@ public class ProjectManagerUI {
 
     public void start() {
 
+        scanner = new Scanner(System.in);
 
         while (true) {
             try {
@@ -89,7 +89,8 @@ public class ProjectManagerUI {
                     return;
                 case 11:
                     System.out.println("Exiting...");
-                    return;
+                    scanner.close();
+                    System.exit(0);
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
@@ -156,7 +157,6 @@ public class ProjectManagerUI {
     }
 
     private void viewBugDetails() {
-        Scanner scanner = new Scanner(System.in);
         System.out.print("Enter Bug ID: ");
         int bugID = scanner.nextInt();
 
@@ -166,7 +166,7 @@ public class ProjectManagerUI {
             System.out.println(bug.toString());
         } catch (BugTrackingException e) {
             //System.out.println("Error: " + e.getMessage());
-            logger.error("Error: Bug with ID does " +bugID+ " not exist!!!" + e.getMessage());
+            logger.error("Error: Bug with ID " +bugID+ " does not exist!!!" + e.getMessage());
         }
     }
 
@@ -237,7 +237,7 @@ public class ProjectManagerUI {
             project.setProjectId(projectId);
             project.setProjectName(projectName);
             project.setStartDate(startDate);
-            project.setStatus(status.valueOf(status));
+            project.setStatus(String.valueOf(status));
             project.setProjectManager(selectedPM);
 
             System.out.println("NEW PROJECT CREATION UNDER PROCESS");
@@ -272,10 +272,10 @@ public class ProjectManagerUI {
             }
         } catch (ProjectNotFoundException e) {
             System.out.println("Project not found");
-            logger.error("Project not found ", e.getMessage());
+            logger.error("Project not found "+ e.getMessage());
         } catch (DatabaseAccessException e) {
             System.out.println("Database access error");
-            logger.error("Database access error", e.getMessage());
+            logger.error("Database access error" + e.getMessage());
         }
     }
 

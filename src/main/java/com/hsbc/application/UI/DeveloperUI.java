@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class DeveloperUI {
-    private final Scanner scanner = new Scanner(System.in);
+    private Scanner scanner;
     private final DeveloperService developerService;
     Logger logger;
 
@@ -24,10 +24,10 @@ public class DeveloperUI {
     }
 
     public void displayDeveloperPanel(String developerUsername) {
+        scanner = new Scanner(System.in);
         System.out.println("Welcome, Developer " + developerUsername);
-        boolean isRunning = true;
 
-        while (isRunning) {
+        while (true) {
             System.out.println("\nDeveloper Panel:");
             System.out.println("1. View Assigned Bugs");
             System.out.println("2. Update Bug Status");
@@ -58,7 +58,8 @@ public class DeveloperUI {
                     return;
                 case 6:
                     System.out.println("Exiting...");
-                    System.exit(1);
+                    scanner.close();
+                    System.exit(0);
                 default:
                     System.out.println("Invalid option. Please try again.");
             }
@@ -67,7 +68,7 @@ public class DeveloperUI {
 
     private void viewAssignedBugs() {
         System.out.print("Enter Developer ID: ");
-        int developerId = scanner.nextInt(); // Assuming scanner is initialized somewhere
+        int developerId = scanner.nextInt();
 
         System.out.println("\nAssigned Bugs:");
 
@@ -137,7 +138,7 @@ public class DeveloperUI {
         int developerID = scanner.nextInt();
         scanner.nextLine();
 
-        Optional<Project> project = null;
+        Optional<Project> project;
         try {
             project = developerService.viewAssignedProjects(developerID);
         } catch (ProjectNotFoundException e) {
