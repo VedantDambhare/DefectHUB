@@ -133,13 +133,9 @@ public class DeveloperUI {
     }
 
     private void viewAssignedProject() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter Developer ID: ");
-        int developerID = scanner.nextInt();
-        scanner.nextLine();
 
         try {
-            developerService.viewAssignedProjects(developerID).forEach(System.out::println);
+            developerService.viewAssignedProjects().forEach(System.out::println);
         } catch (ProjectNotFoundException e) {
             e.printStackTrace();
         }

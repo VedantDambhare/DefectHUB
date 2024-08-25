@@ -67,8 +67,9 @@ public class TesterDaoImpl implements TesterDao {
             ps.setInt(1, CurrentSession.getUserId());
             System.out.println("Executing query: "+ps.toString());
             ResultSet rs = ps.executeQuery();
-            Project p = new Project();
+            int counter=0;
             while (rs.next()) {
+                Project p = new Project();
                 p.setProjectId(rs.getInt("projectId"));
                 p.setProjectName(rs.getString("projectName"));
                 p.setStartDate(rs.getString("startDate"));
@@ -88,7 +89,7 @@ public class TesterDaoImpl implements TesterDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        finally { return projects;}
+        finally {return projects;}
     }
 
     @Override

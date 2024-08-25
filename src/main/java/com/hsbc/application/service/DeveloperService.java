@@ -17,5 +17,5 @@ public interface DeveloperService {
 
     Optional<Bug> getBugDetails(int bugID) throws BugNotFoundException;
 
-    List<Project> viewAssignedProjects(int developerID) throws ProjectNotFoundException;
+    List<Project> viewAssignedProjects() throws ProjectNotFoundException;
 }

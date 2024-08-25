@@ -33,7 +33,7 @@ public class DeveloperServiceImpl implements DeveloperService {
     }
 
     @Override
-    public List<Project> viewAssignedProjects(int developerID) throws ProjectNotFoundException {
-        return developerDao.viewAssignedProjects(developerID);
+    public List<Project> viewAssignedProjects() throws ProjectNotFoundException {
+        return developerDao.viewAssignedProjects();
     }
 }

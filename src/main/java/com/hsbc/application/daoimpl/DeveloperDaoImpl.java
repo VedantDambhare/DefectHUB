@@ -110,7 +110,7 @@ public class DeveloperDaoImpl implements DeveloperDao {
     }
 
     @Override
-    public List<Project> viewAssignedProjects(int developerID) throws ProjectNotFoundException {
+    public List<Project> viewAssignedProjects() throws ProjectNotFoundException {
         String sql = "select t3.*, t4.* from (select t1.* , t2.userId from Projects t1, ProjectTeamMembers t2 where t2.userId=? and t2.projectId = t1.projectId) t3, Users t4 where t3.projectManagerId = t4.userId";
 
         Connection conn = DBConfig.getConnection();
@@ -120,8 +120,8 @@ public class DeveloperDaoImpl implements DeveloperDao {
             ps.setInt(1, CurrentSession.getUserId());
             System.out.println("Executing query: "+ps.toString());
             ResultSet rs = ps.executeQuery();
-            Project p = new Project();
             while (rs.next()) {
+                Project p = new Project();
                 p.setProjectId(rs.getInt("projectId"));
                 p.setProjectName(rs.getString("projectName"));
                 p.setStartDate(rs.getString("startDate"));
@@ -141,6 +141,6 @@ public class DeveloperDaoImpl implements DeveloperDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        finally { return projects;}
+        finally {return projects;}
     }
 }
