@@ -6,6 +6,9 @@ import java.util.Objects;
 public class ProjectManager extends User {
     private static int totalProjects;
 
+    public ProjectManager() {
+    }
+
     public ProjectManager(int id, String username, String passwd, String role, Date lastLoggedIn) {
         super(id, username, passwd, role, lastLoggedIn);
         totalProjects += 1;
