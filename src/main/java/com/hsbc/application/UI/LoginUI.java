@@ -1,8 +1,10 @@
 package com.hsbc.application.UI;
 
+import com.hsbc.application.config.CurrentSession;
+import com.hsbc.application.UI.TesterUI;
 import com.hsbc.application.dao.AdminDAO;
 import com.hsbc.application.dao.LoginDao;
-import com.hsbc.application.daoimpl.AdminDAOImpl;
+//import com.hsbc.application.daoimpl.AdminDAOImpl;
 import com.hsbc.application.daoimpl.LoginDaoImpl;
 import com.hsbc.application.exceptions.UserNotFoundException;
 
@@ -37,7 +39,11 @@ public class LoginUI {
                         flag = false;
                         break;
                     case "TESTER":
+                        System.out.println("Logging in as Tester");
+                        TesterUI tester = new TesterUI();
                         System.out.println("Redirecting to TESTER page...");
+                        tester.showTesterUI();
+                        System.out.println("Exiting from TESTER page...");
                         flag = false;
                         break;
                     default:

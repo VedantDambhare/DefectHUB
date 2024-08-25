@@ -2,6 +2,7 @@ package com.hsbc.application.daoimpl;
 
 
 
+import com.hsbc.application.config.CurrentSession;
 import com.hsbc.application.config.DBConfig;
 import com.hsbc.application.dao.LoginDao;
 import com.hsbc.application.exceptions.UserNotFoundException;
@@ -38,6 +39,7 @@ public class LoginDaoImpl implements LoginDao {
             }
             rs.next();
             if(rs.getString("userName").equals(username) && rs.getString("hashedPassword").equals(hashedPassword)){
+                CurrentSession.setUserId(rs.getInt("userId"));
                 return rs.getString("role");
             }
             return "";

@@ -43,5 +43,10 @@ public class Tester extends User {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Tester{"+super.toString()+'}';
+    }
+
 
 }

@@ -1,9 +1,11 @@
 package com.hsbc.application.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
 public class Bug {
+    private int bugID;
     private String title;
     private String desc;
     private String status;
@@ -11,14 +13,13 @@ public class Bug {
     private String severity;
     private int projectId;
     private int reporterId;
-    private int assigneeId;
-    private Date createdAt;
-    private Date updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public Bug() {
     }
 
-    public Bug(String title, String desc, String status, String priority, String severity, int projectId, int reporterId, int assigneeId, Date createdAt, Date updatedAt) {
+    public Bug(String title, String desc, String status, String priority, String severity, int projectId, int reporterId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.title = title;
         this.desc = desc;
         this.status = status;
@@ -26,7 +27,6 @@ public class Bug {
         this.severity = severity;
         this.projectId = projectId;
         this.reporterId = reporterId;
-        this.assigneeId = assigneeId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -87,27 +87,19 @@ public class Bug {
         this.reporterId = reporterId;
     }
 
-    public int getAssigneeId() {
-        return assigneeId;
-    }
-
-    public void setAssigneeId(int assigneeId) {
-        this.assigneeId = assigneeId;
-    }
-
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -121,7 +113,6 @@ public class Bug {
                 ", severity='" + severity + '\'' +
                 ", projectId=" + projectId +
                 ", reporterId=" + reporterId +
-                ", assigneeId=" + assigneeId +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
@@ -131,11 +122,11 @@ public class Bug {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Bug bug)) return false;
-        return projectId == bug.projectId && reporterId == bug.reporterId && assigneeId == bug.assigneeId && Objects.equals(title, bug.title) && Objects.equals(desc, bug.desc) && Objects.equals(status, bug.status) && Objects.equals(priority, bug.priority) && Objects.equals(severity, bug.severity) && Objects.equals(createdAt, bug.createdAt) && Objects.equals(updatedAt, bug.updatedAt);
+        return projectId == bug.projectId && reporterId == bug.reporterId && Objects.equals(title, bug.title) && Objects.equals(desc, bug.desc) && Objects.equals(status, bug.status) && Objects.equals(priority, bug.priority) && Objects.equals(severity, bug.severity) && Objects.equals(createdAt, bug.createdAt) && Objects.equals(updatedAt, bug.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, desc, status, priority, severity, projectId, reporterId, assigneeId, createdAt, updatedAt);
+        return Objects.hash(title, desc, status, priority, severity, projectId, reporterId, createdAt, updatedAt);
     }
 }
