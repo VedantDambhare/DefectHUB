@@ -121,9 +121,9 @@ public class ProjectManagerUI {
 
             System.out.println("Bugs filtered by " + filter + " for value " +value+ " for Project ID: " + projectID);
             System.out.println("-------------------------------------------------");
-            System.out.println("Bug ID\tTitle\tDescription\tStatus\tPriority\tSeverity\tProject ID\tReporter ID\tAssignee ID\tCreated Date\tUpdated Date");
+            System.out.println("Bug ID\tTitle\tDescription\tStatus\tPriority\tSeverity\tProject ID\tReporter ID\tCreated Date\tUpdated Date");
             for(Bug b : bugs){
-                System.out.println(b.getBugID() + "\t" + b.getTitle() + "\t" + b.getDesc() + "\t" + b.getStatus() + "\t" + b.getPriority() + "\t" + b.getSeverity() + "\t" + b.getProjectId() + "\t" + b.getReporterId() + "\t" + b.getAssigneeId() + "\t" + b.getCreatedAt() + "\t" + b.getUpdatedAt());
+                System.out.println(b.getBugID() + "\t" + b.getTitle() + "\t" + b.getDesc() + "\t" + b.getStatus() + "\t" + b.getPriority() + "\t" + b.getSeverity() + "\t" + b.getProjectId() + "\t" + b.getReporterId() + "\t"  + b.getCreatedAt() + "\t" + b.getUpdatedAt());
             }
         } catch (BugNotFoundException | UserNotFoundException | SQLException e) {
             System.out.println("Bug not found");
@@ -141,9 +141,9 @@ public class ProjectManagerUI {
             bugs = adminService.showAllBugs();
             System.out.println("All Bugs: ");
             System.out.println("-------------------------------------------------");
-            System.out.println("Bug ID\tTitle\tDescription\tStatus\tPriority\tSeverity\tProject ID\tReporter ID\tAssignee ID\tCreated Date\tUpdated Date");
+            System.out.println("Bug ID\tTitle\tDescription\tStatus\tPriority\tSeverity\tProject ID\tReporter ID\tCreated Date\tUpdated Date");
             for(Bug b : bugs){
-                System.out.println(b.getBugID() + "\t" + b.getTitle() + "\t" + b.getDesc() + "\t" + b.getStatus() + "\t" + b.getPriority() + "\t" + b.getSeverity() + "\t" + b.getProjectId() + "\t" + b.getReporterId() + "\t" + b.getAssigneeId() + "\t" + b.getCreatedAt() + "\t" + b.getUpdatedAt());
+                System.out.println(b.getBugID() + "\t" + b.getTitle() + "\t" + b.getDesc() + "\t" + b.getStatus() + "\t" + b.getPriority() + "\t" + b.getSeverity() + "\t" + b.getProjectId() + "\t" + b.getReporterId() + "\t"  + b.getCreatedAt() + "\t" + b.getUpdatedAt());
             }
         } catch (DatabaseAccessException e) {
             System.out.println("Database access error");

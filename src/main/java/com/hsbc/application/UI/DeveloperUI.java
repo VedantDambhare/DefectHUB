@@ -80,7 +80,6 @@ public class DeveloperUI {
                     System.out.println("Severity: " + bug.getSeverity());
                     System.out.println("Project ID: " + bug.getProjectId());
                     System.out.println("Reporter ID: " + bug.getReporterId());
-                    System.out.println("Assignee ID: " + bug.getAssigneeId());
                     System.out.println("Created At: " + bug.getCreatedAt());
                     System.out.println("Updated At: " + bug.getUpdatedAt());
                     System.out.println("----------------------");

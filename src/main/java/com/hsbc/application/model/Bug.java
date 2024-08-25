@@ -103,10 +103,18 @@ public class Bug {
         this.updatedAt = updatedAt;
     }
 
+    public int getBugID() {
+        return bugID;
+    }
+
+    public void setBugID(int bugID) {
+        this.bugID = bugID;
+    }
+
     @Override
     public String toString() {
         return "Bug{" +
-                ", title='" + title + '\'' +
+                "title='" + title + '\'' +
                 ", desc='" + desc + '\'' +
                 ", status='" + status + '\'' +
                 ", priority='" + priority + '\'' +

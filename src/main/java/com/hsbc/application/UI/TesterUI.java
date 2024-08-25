@@ -11,7 +11,6 @@ import java.util.Scanner;
 
 public class TesterUI {
     public void showTesterUI() {
-        System.out.println("Showing Tester UI...");
         Scanner sc = new Scanner(System.in);
         TesterDao tester = new TesterDaoImpl();
 
@@ -22,6 +21,7 @@ public class TesterUI {
             System.out.println("2. Show All Bugs Raised");
             System.out.println("3. Show Bugs by Project Id");
             System.out.println("4. View All assigned projects");
+            System.out.println("5. Exit");
 
 
             int ch = sc.nextInt();
@@ -71,7 +71,7 @@ public class TesterUI {
                     tester.getAssignedProjects().forEach(System.out::println);
                     break;
 
-                case 100:
+                case 5:
                     flag=false;
                     break;
             }

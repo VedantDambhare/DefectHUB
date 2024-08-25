@@ -8,6 +8,7 @@ import com.hsbc.application.model.*;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.sql.Date;
@@ -41,9 +42,8 @@ public class AdminDAOImpl implements AdminDAO {
                     //Later on, we will be getting the project, developer and tester info from the respective DAOs and call their GetAllInfo() methods
                     bug.setProjectId(rs.getInt("projectId"));
                     bug.setReporterId(rs.getInt("reporterId"));
-                    bug.setAssigneeId(rs.getInt("assigneeId"));
-                    bug.setCreatedAt(rs.getTimestamp("created_at"));
-                    bug.setUpdatedAt(rs.getTimestamp("updated_at"));
+                    bug.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                    bug.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
 
                     return bug;
                 } else {
@@ -249,10 +249,9 @@ public class AdminDAOImpl implements AdminDAO {
                     bug.setSeverity(rs.getString("severity"));
                     bug.setProjectId(rs.getInt("projectId"));
                     bug.setReporterId(rs.getInt("reporterId"));
-                    bug.setAssigneeId(rs.getInt("assigneeId"));
 //                    int ProjectId = rs.getInt("projectId");
-                    bug.setCreatedAt(rs.getTimestamp("created_at"));
-                    bug.setUpdatedAt(rs.getTimestamp("updated_at"));
+                    bug.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                    bug.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
 
                     blist.add(bug);
                     //System.out.println("Bug: " + bug);

@@ -45,9 +45,8 @@ public class DeveloperDaoImpl implements DeveloperDao {
                 //Later on, we will be getting the project, developer and tester info from the respective DAOs and call their GetAllInfo() methods
                 bug.setProjectId(rs.getInt("projectId"));
                 bug.setReporterId(rs.getInt("reporterId"));
-                bug.setAssigneeId(rs.getInt("assigneeId"));
-                bug.setCreatedAt(rs.getTimestamp("created_at"));
-                bug.setUpdatedAt(rs.getTimestamp("updated_at"));
+                bug.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                bug.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
             }
         } catch (SQLException e) {
             // Custom error handling
@@ -94,9 +93,8 @@ public class DeveloperDaoImpl implements DeveloperDao {
                 //Later on, we will be getting the project, developer and tester info from the respective DAOs and call their GetAllInfo() methods
                 bug.setProjectId(rs.getInt("projectId"));
                 bug.setReporterId(rs.getInt("reporterId"));
-                bug.setAssigneeId(rs.getInt("assigneeId"));
-                bug.setCreatedAt(rs.getTimestamp("created_at"));
-                bug.setUpdatedAt(rs.getTimestamp("updated_at"));
+                bug.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                bug.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
 
                 return Optional.of(bug);
             }
