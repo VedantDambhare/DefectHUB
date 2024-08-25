@@ -1,5 +1,6 @@
 package com.hsbc.application.daoimpl;
 
+import com.hsbc.application.config.CurrentSession;
 import com.hsbc.application.dao.DeveloperDao;
 import com.hsbc.application.exceptions.BugNotFoundException;
 import com.hsbc.application.exceptions.ProjectNotFoundException;
@@ -109,31 +110,37 @@ public class DeveloperDaoImpl implements DeveloperDao {
     }
 
     @Override
-    public Optional<Project> viewAssignedProjects(int developerID) throws ProjectNotFoundException {
-        try (Connection conn = DBConfig.getConnection()) {
-            String sql = "SELECT * FROM project WHERE developer0id = ?";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, developerID);
-            ResultSet rs = stmt.executeQuery();
+    public List<Project> viewAssignedProjects(int developerID) throws ProjectNotFoundException {
+        String sql = "select t3.*, t4.* from (select t1.* , t2.userId from Projects t1, ProjectTeamMembers t2 where t2.userId=? and t2.projectId = t1.projectId) t3, Users t4 where t3.projectManagerId = t4.userId";
 
-            if (rs.next()) {
-                Project project = new Project(
-                        rs.getInt("projectID"),
-                        rs.getString("projectName"),
-                        rs.getString("startDate"),
-                        rs.getString("status"),
-                        (ProjectManager) rs.getObject("projectManager"),
-                        rs.getDate("createdAt"),
-                        rs.getDate("updateAt")
+        Connection conn = DBConfig.getConnection();
+        List<Project> projects = new ArrayList<Project>();
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, CurrentSession.getUserId());
+            System.out.println("Executing query: "+ps.toString());
+            ResultSet rs = ps.executeQuery();
+            Project p = new Project();
+            while (rs.next()) {
+                p.setProjectId(rs.getInt("projectId"));
+                p.setProjectName(rs.getString("projectName"));
+                p.setStartDate(rs.getString("startDate"));
+                p.setStatus(rs.getString("status"));
+                p.setProjectManager(
+                        new ProjectManager(rs.getInt("projectManagerId"),
+                                rs.getString("userName"),
+                                rs.getString("hashedPassword"),
+                                "PROJECT_MANAGER",
+                                rs.getDate("last_logged_in"))
                 );
-                return Optional.of(project);
-            } else {
-                throw new ProjectNotFoundException("The project does not exist");
+                p.setCreatedAt(rs.getDate("created_at"));
+                p.setUpdatedAt(rs.getDate("updated_at"));
+
+                projects.add(p);
             }
         } catch (SQLException e) {
-            //custom error check
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
-        return Optional.empty();
+        finally { return projects;}
     }
 }

@@ -13,6 +13,6 @@ public interface DeveloperDao {
     Optional<List<Bug>> getAssignedBugs(int developerId) throws BugNotFoundException;
     boolean bugStatus(int bugId, String status);
     Optional<Bug> getBugDetails(int bugID) throws BugNotFoundException;
-    Optional<Project> viewAssignedProjects(int developerID) throws ProjectNotFoundException;
+    List<Project> viewAssignedProjects(int developerID) throws ProjectNotFoundException;
 
 }

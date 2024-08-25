@@ -138,15 +138,11 @@ public class DeveloperUI {
         int developerID = scanner.nextInt();
         scanner.nextLine();
 
-        Optional<Project> project;
         try {
-            project = developerService.viewAssignedProjects(developerID);
+            developerService.viewAssignedProjects(developerID).forEach(System.out::println);
         } catch (ProjectNotFoundException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
-
-        project.ifPresentOrElse((proj) -> System.out.println(proj.toString()),
-                () -> System.out.println("No projects assigned to this developer."));
 
     }
 
