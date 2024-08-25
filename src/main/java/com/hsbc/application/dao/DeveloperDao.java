@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface DeveloperDao {
 
-    Optional<List<Bug>> getAssignedBugs(int developerId) throws BugNotFoundException;
+    Optional<List<Bug>> getAssignedBugs() throws BugNotFoundException;
     boolean bugStatus(int bugId, String status);
     Optional<Bug> getBugDetails(int bugID) throws BugNotFoundException;
     List<Project> viewAssignedProjects() throws ProjectNotFoundException;

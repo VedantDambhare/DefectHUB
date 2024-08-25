@@ -25,14 +25,14 @@ public class DeveloperDaoImpl implements DeveloperDao {
     }
 
     @Override
-    public Optional<List<Bug>> getAssignedBugs(int developerId) throws BugNotFoundException {
+    public Optional<List<Bug>> getAssignedBugs() throws BugNotFoundException {
         List<Bug> bugs = new ArrayList<>();
 
         try (Connection conn = DBConfig.getConnection()) {
 
             String sql = "SELECT * FROM Bugs WHERE assigneeId = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, developerId);
+            stmt.setInt(1, CurrentSession.getUserId());
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -53,7 +53,7 @@ public class DeveloperDaoImpl implements DeveloperDao {
         } catch (SQLException e) {
             // Custom error handling
             System.out.println(e.getMessage());
-            throw new BugNotFoundException("Unable to retrieve bugs for developer ID: " + developerId, e);
+            throw new BugNotFoundException("Unable to retrieve bugs for developer ID: " + CurrentSession.getUserId() + e);
         }
 
         return bugs.isEmpty() ? Optional.empty() : Optional.of(bugs);

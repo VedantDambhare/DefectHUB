@@ -67,14 +67,12 @@ public class DeveloperUI {
     }
 
     private void viewAssignedBugs() {
-        System.out.print("Enter Developer ID: ");
-        int developerId = scanner.nextInt();
 
         System.out.println("\nAssigned Bugs:");
 
         try {
             // Get the assigned bugs for the developer ID
-            Optional<List<Bug>> optionalBugs = developerService.getAssignedBugs(developerId);
+            Optional<List<Bug>> optionalBugs = developerService.getAssignedBugs();
             System.out.println("BUGS INFO: "+optionalBugs);
 
             // Print the bugs if they are present

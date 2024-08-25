@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface DeveloperService {
 
-    Optional<List<Bug>> getAssignedBugs(int developerId) throws BugNotFoundException;
+    Optional<List<Bug>> getAssignedBugs() throws BugNotFoundException;
 
     boolean updateBugStatus(int bugId, String status);
 

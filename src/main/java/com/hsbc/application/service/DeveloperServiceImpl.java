@@ -18,8 +18,8 @@ public class DeveloperServiceImpl implements DeveloperService {
     }
 
     @Override
-    public Optional<List<Bug>> getAssignedBugs(int developerId) throws BugNotFoundException {
-        return developerDao.getAssignedBugs(developerId);
+    public Optional<List<Bug>> getAssignedBugs() throws BugNotFoundException {
+        return developerDao.getAssignedBugs();
     }
 
     @Override
