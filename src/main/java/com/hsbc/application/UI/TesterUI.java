@@ -5,14 +5,21 @@ import com.hsbc.application.dao.TesterDao;
 import com.hsbc.application.daoimpl.TesterDaoImpl;
 import com.hsbc.application.exceptions.ProjectNotFoundException;
 import com.hsbc.application.model.Bug;
+import com.hsbc.application.service.TesterService;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class TesterUI {
+
+    private final TesterService tester;
+
+    public TesterUI(TesterService testerService) {
+        this.tester = testerService;
+    }
     public void showTesterUI() {
         Scanner sc = new Scanner(System.in);
-        TesterDao tester = new TesterDaoImpl();
 
         while(true){
             System.out.println("Enter choice");
@@ -65,7 +72,7 @@ public class TesterUI {
         }
     }
 
-    private void addNewBug(Scanner sc, TesterDao tester){
+    private void addNewBug(Scanner sc, TesterService tester){
         System.out.println("Enter bug Title");
         String title = sc.next();
         System.out.println("Enter bug Description");

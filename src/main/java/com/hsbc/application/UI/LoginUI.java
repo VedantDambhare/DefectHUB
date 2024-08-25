@@ -5,10 +5,8 @@ import com.hsbc.application.UI.TesterUI;
 import com.hsbc.application.dao.AdminDAO;
 import com.hsbc.application.dao.LoginDao;
 //import com.hsbc.application.daoimpl.AdminDAOImpl;
-import com.hsbc.application.daoimpl.AdminDAOImpl;
-import com.hsbc.application.daoimpl.DeveloperDaoImpl;
-import com.hsbc.application.daoimpl.LoginDaoImpl;
-import com.hsbc.application.daoimpl.ProjectDAOImpl;
+import com.hsbc.application.dao.TesterDao;
+import com.hsbc.application.daoimpl.*;
 import com.hsbc.application.exceptions.UserNotFoundException;
 import com.hsbc.application.model.ProjectManager;
 import com.hsbc.application.service.*;
@@ -26,7 +24,10 @@ public class LoginUI {
             String username = sc.nextLine();
             System.out.println("Enter your password: ");
             String password = sc.nextLine();
-            LoginDao login = new LoginDaoImpl();
+
+            LoginDao loginDaoImpl = new LoginDaoImpl();
+            LoginService login = new LoginServiceImpl(loginDaoImpl);
+
 
             try {
                 String s = login.authenticate(username, password);
@@ -49,8 +50,10 @@ public class LoginUI {
                         developerUI.displayDeveloperPanel("developer_1");
                         break;
                     case "TESTER":
-                        TesterUI tester = new TesterUI();
-                        tester.showTesterUI();
+                        TesterDao testerDao = new TesterDaoImpl();
+                        TesterService tester = new TesterServiceImpl(testerDao);
+                        TesterUI testerUI = new TesterUI(tester);
+                        testerUI.showTesterUI();
                         break;
                     default:
                         System.out.println("Invalid username or password");
