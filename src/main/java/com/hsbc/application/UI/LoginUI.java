@@ -41,19 +41,16 @@ public class LoginUI {
                         ProjectService projectService = new ProjectServiceImpl(projectDAO);
                         ProjectManagerUI adminUI = new ProjectManagerUI(adminService,projectService);
                         adminUI.start();
-                        flag = false;
                         break;
                     case "DEVELOPER":
                         DeveloperDaoImpl developerDao = new DeveloperDaoImpl();
                         DeveloperService developerService = new DeveloperServiceImpl(developerDao);
                         DeveloperUI developerUI = new DeveloperUI(developerService);
                         developerUI.displayDeveloperPanel("developer_1");
-                        flag = false;
                         break;
                     case "TESTER":
                         TesterUI tester = new TesterUI();
                         tester.showTesterUI();
-                        flag = false;
                         break;
                     default:
                         System.out.println("Invalid username or password");

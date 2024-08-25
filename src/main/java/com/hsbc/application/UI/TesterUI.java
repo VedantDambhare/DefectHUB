@@ -21,7 +21,8 @@ public class TesterUI {
             System.out.println("2. Show All Bugs Raised");
             System.out.println("3. Show Bugs by Project Id");
             System.out.println("4. View All assigned projects");
-            System.out.println("5. Exit");
+            System.out.println("5. Logout");
+            System.out.println("6. Exit");
 
 
             int ch = sc.nextInt();
@@ -72,8 +73,16 @@ public class TesterUI {
                     break;
 
                 case 5:
+                    System.out.println("Logging out...");
+                    return;
+
+                case 6:
+                    System.out.println("Exiting...");
                     flag=false;
                     break;
+
+                default:
+                    System.out.println("Invalid choice. Please try again.");
             }
         }
         sc.close();

@@ -50,7 +50,8 @@ public class ProjectManagerUI {
             System.out.println("7. View Bug Details By Filter");
             System.out.println("8. Assign Bug to Developer");
             System.out.println("9. Close Bug");
-            System.out.println("10. Exit");
+            System.out.println("10. Logout");
+            System.out.println("11. Exit");
 
             System.out.println("Enter your choice: ");
             int choice = scanner.nextInt();
@@ -84,6 +85,9 @@ public class ProjectManagerUI {
                     closeBug();
                     break;
                 case 10:
+                    System.out.println("Logging out...");
+                    return;
+                case 11:
                     System.out.println("Exiting...");
                     return;
                 default:

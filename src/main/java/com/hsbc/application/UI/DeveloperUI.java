@@ -33,6 +33,8 @@ public class DeveloperUI {
             System.out.println("2. Update Bug Status");
             System.out.println("3. Get Bug Details");
             System.out.println("4. View Assigned Projects");
+            System.out.println("5. Logout");
+            System.out.println("6. Exit");
 
             System.out.print("Select an option: ");
             int choice = scanner.nextInt();
@@ -51,6 +53,12 @@ public class DeveloperUI {
                 case 4:
                     viewAssignedProject();
                     break;
+                case 5:
+                    System.out.println("Logging out...");
+                    return;
+                case 6:
+                    System.out.println("Exiting...");
+                    System.exit(1);
                 default:
                     System.out.println("Invalid option. Please try again.");
             }
