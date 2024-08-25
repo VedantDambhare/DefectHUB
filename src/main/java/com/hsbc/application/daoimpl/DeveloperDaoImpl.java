@@ -48,6 +48,7 @@ public class DeveloperDaoImpl implements DeveloperDao {
                 bug.setReporterId(rs.getInt("reporterId"));
                 bug.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
                 bug.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
+                bugs.add(bug);
             }
         } catch (SQLException e) {
             // Custom error handling
