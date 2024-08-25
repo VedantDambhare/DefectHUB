@@ -4,11 +4,9 @@ import com.hsbc.application.config.CurrentSession;
 import com.hsbc.application.config.DBConfig;
 import com.hsbc.application.dao.TesterDao;
 import com.hsbc.application.exceptions.ProjectNotFoundException;
-import com.hsbc.application.exceptions.UserNotFoundException;
 import com.hsbc.application.model.Bug;
 import com.hsbc.application.model.Project;
 import com.hsbc.application.model.ProjectManager;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -160,19 +158,4 @@ public class TesterDaoImpl implements TesterDao {
         return false;
     }
 
-    //    @Override
-//    public List<Bug> getAllBugs(int userId) throws UserNotFoundException {
-//        Connection conn = DBConfig.getConnection();
-//
-//        String sql = "select * from Users where userName=? and hashedPassword =?";
-//
-//        try {
-//            PreparedStatement stmt = conn.prepareStatement(sql);
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//
-//        return List.of();
-//    }
 }
