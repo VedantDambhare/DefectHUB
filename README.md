@@ -11,12 +11,7 @@ The Bug Tracking System is a console-based application designed to manage projec
 - [Features](#features)
 - [Technologies Used](#technologies-used)
 - [Database Schema](#database-schema)
-- [Project Structure](#project-structure)
 - [Setup and Installation](#setup-and-installation)
-- [Usage](#usage)
-- [Admin Functionalities](#admin-functionalities)
-- [Developer and Tester Functionalities](#developer-and-tester-functionalities)
-- [Error Handling](#error-handling)
 
 ## Features
 
@@ -87,15 +82,15 @@ The Bug Tracking System is a console-based application designed to manage projec
 To run the project, run the Login UI. java found at src/main/java/com/hsbc/application/UI/LoginUI.java
 
 **Project Manager Credentials:** 
-Username: project_manager_1
-Password: hashed_password_1
+***Username:*** project_manager_1
+***Password:*** hashed_password_1
 
 **Developer Credentials:**
-Username: developer_1
-Password: hashed_password_2
+***Username:*** developer_1
+***Password:*** hashed_password_2
 
 **Tester Credentials:**
-Username: tester_1
-Password: hashed_password_4
+***Username:*** tester_1
+***Password:*** hashed_password_4
 
 ### Contact us at: harshalsonawane127@gmail.com in case of any queries
